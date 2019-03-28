@@ -1,0 +1,1 @@
+iniciomultiplicacion=42*subtotal*tax;finall
