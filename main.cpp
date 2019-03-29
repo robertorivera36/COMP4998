@@ -34,3 +34,5 @@ int main() {
     input_source.close();
     output_lex.close();
 }
+
+// added a comment to test sublime merge
