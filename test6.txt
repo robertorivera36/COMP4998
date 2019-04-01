@@ -1,6 +1,6 @@
-iniciolll
+inicio
 	var = 0;
-	Mientras (var => 10)
+	Mientras (var > 10)
 		Escribe (var);
 		var = var - 1;
 	finmientras

@@ -30,9 +30,8 @@ int main() {
 
     int text_case;
 
-    char prev_ch, ch, buffer[20], parentesisIzquierdo[] = "(", parentesisDerecho[] = ")", 
-    oprelacional[] = "<>", oparitmetico[] = "+-*/", puntocoma[] = ";", asignacion[] = "=";
-    int i, j = 0;
+    char prev_ch, ch, buffer[20];
+    int j = 0;
 
     std::ifstream input_source;
     std::ofstream output_lex;
@@ -80,6 +79,22 @@ int main() {
         ch = input_source.get();
         prev_ch = ch;
 
+        if (isalnum(ch)) {
+            buffer[j++] = ch;  
+        } else if (isdigit(ch) && isdigit(input_source.peek())) {
+            char a = input_source.peek();
+            output_lex << ch << a << " es <numero>\n";
+        } else if ((ch == '\n') || (j != 0)) {
+            buffer[j] = '\0';
+            j = 0;
+
+            if (lex(buffer)) {
+                output_lex << buffer << " es <palabraReservada>\n";
+            } else {
+                output_lex << buffer << " es <identificador>\n";
+            }
+        }
+
         if (ch == '<') {
             if (input_source.peek() == '=') {
                 output_lex << ch << "es <opRelacional>\n";
@@ -89,14 +104,12 @@ int main() {
                 output_lex << ch << " es <opRelacional>\n";
             }
         }
-        
+
         if (ch == '=') {
             if (input_source.peek() == '=') {
                 char a = input_source.peek();
                 output_lex << ch << a << " es <opRelacional>\n";
             }
-        } else if (ch == '=' && input_source.peek() == ' ') {
-            output_lex << ch << " es <asignador>\n";
         }
 
         if (ch == '>') {
@@ -116,24 +129,10 @@ int main() {
             output_lex << ch << " es <parentesisIzquierdo>\n";
         } else if (ch == ')') {
             output_lex << ch << " es <parentesisDerecho>\n";
+        } else if (ch == '=') {
+            output_lex << ch << " es <asignador>\n";
         } else if (ch == ';') {
             output_lex << ch << " es <puntoComa>\n";
-        }
-
-        if (isalnum(ch)) {
-            buffer[j++] = ch;  
-        } else if (isdigit(ch) && isdigit(input_source.peek())) {
-            char a = input_source.peek();
-            output_lex << ch << a << " es <numero>\n";
-        } else if ((ch == ' ' || ch == '\n') || (j != 0)) {
-            buffer[j] = '\0';
-            j = 0;
-
-            if (lex(buffer)) {
-                output_lex << buffer << " es <palabraReservada>\n";
-            } else {
-                output_lex << buffer << " es <identificador>\n";
-            }
         }
     }
 
