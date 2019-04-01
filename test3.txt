@@ -1,0 +1,4 @@
+inicio
+	var = 0;
+	Escribe(var);
+final

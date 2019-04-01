@@ -1,0 +1,3 @@
+inicio
+	multiplicacion ≠ 42 * subtotal * tax;
+final
