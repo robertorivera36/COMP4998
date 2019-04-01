@@ -17,12 +17,10 @@ bool lex(char buffer[]) {
 
 	char keywords[32][20] = {"inicio","final","Si","finsi","sino","Mientras","finmientras",
 							"Escribe"};
-	int i, flag = 0;
 	
-	for(i = 0; i < 32; ++i){
-		if(strcmp(keywords[i], buffer) == 0){
+	for (int i = 0; i < 32; ++i) {
+		if (strcmp(keywords[i], buffer) == 0) {
 			return true;
-			break;
 		}
 	}
 	return false;
@@ -32,7 +30,7 @@ int main() {
 
     int text_case;
 
-    char ch, buffer[20], parentesisIzquierdo[] = "(", parentesisDerecho[] = ")", 
+    char prev_ch, ch, buffer[20], parentesisIzquierdo[] = "(", parentesisDerecho[] = ")", 
     oprelacional[] = "<>", oparitmetico[] = "+-*/", puntocoma[] = ";", asignacion[] = "=";
     int i, j = 0;
 
@@ -80,63 +78,54 @@ int main() {
 
     while(!input_source.eof()) {
         ch = input_source.get();
+        prev_ch = ch;
 
         if (ch == '<') {
             if (input_source.peek() == '=') {
-                std::cout << ch << "es <opRelacional>, MEI\n";
+                output_lex << ch << "es <opRelacional>\n";
             } else if (input_source.peek() == '>') {
-                std::cout << ch << " es <opRelacional>, DIF\n";
+                output_lex << ch << " es <opRelacional>\n";
             } else {
-                std::cout << ch << " es <opRelacional>, MEN\n";
-            }
-        }
-        if (ch == '>') {
-            if (input_source.peek() == '=') {
-                std::cout << ch << " es <opRelacional, MAI\n";
-            } else {
-                std::cout << ch << " es <opRelacional, MAY\n";
-            }
-        }
-
-        for (i = 0; i < 4; ++i) {
-            if (ch == oprelacional[i]) {
                 output_lex << ch << " es <opRelacional>\n";
             }
         }
+        
+        if (ch == '=') {
+            if (input_source.peek() == '=') {
+                char a = input_source.peek();
+                output_lex << ch << a << " es <opRelacional>\n";
+            }
+        } else if (ch == '=' && input_source.peek() == ' ') {
+            output_lex << ch << " es <asignador>\n";
+        }
 
-        for (i = 0; i < 4; ++i) {
-            if (ch == oparitmetico[i]) {
-                output_lex << ch << " es <opAritmetico>\n";
+        if (ch == '>') {
+            if (input_source.peek() == '=') {
+                char a = input_source.peek();
+                output_lex << ch << a << " es <opRelacional>\n";
+            } else if (input_source.peek() == ' '){
+                output_lex << ch << " es <opRelacional>\n";
+            } else {
+                output_lex << "ERROR\n";
             }
         }
 
-         for (i = 0; i < 1; ++i) {
-            if (ch == parentesisIzquierdo[i]) {
-                output_lex << ch << " es <parentesisIzquierdo>\n";
-            }
-        }
-
-        for (i = 0; i < 1; ++i) {
-            if (ch == parentesisDerecho[i]) {
-                output_lex << ch << " es <parentesisDerecho>\n";
-            }
-        }
-
-        for (i = 0; i < 1; ++i) {
-            if (ch == asignacion[i]) {
-                output_lex << ch << " es <asignacion>\n";
-            }
-        }
-
-        for (i = 0; i < 1; ++i) {
-            if (ch == puntocoma[i]) {
-                output_lex << ch << " es <puntoComa>\n";
-            }
+        if (ch == '+' || ch == '-' || ch == '*' || ch == '/') {
+            output_lex << ch << " es <opAritmetico>\n";
+        } else if (ch == '(') {
+            output_lex << ch << " es <parentesisIzquierdo>\n";
+        } else if (ch == ')') {
+            output_lex << ch << " es <parentesisDerecho>\n";
+        } else if (ch == ';') {
+            output_lex << ch << " es <puntoComa>\n";
         }
 
         if (isalnum(ch)) {
-            buffer[j++] = ch;
-        } else if ((ch == ' ' || ch == '\n') && (j != 0)) {
+            buffer[j++] = ch;  
+        } else if (isdigit(ch) && isdigit(input_source.peek())) {
+            char a = input_source.peek();
+            output_lex << ch << a << " es <numero>\n";
+        } else if ((ch == ' ' || ch == '\n') || (j != 0)) {
             buffer[j] = '\0';
             j = 0;
 
