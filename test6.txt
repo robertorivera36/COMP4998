@@ -1,7 +1,7 @@
-inicio
+iniciolll
 	var = 0;
-	Mientras(var > 10)
-		Escribe(var);
+	Mientras (var >= 10)
+		Escribe (var);
 		var = var - 1;
 	finmientras
 final
