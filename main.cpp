@@ -7,15 +7,56 @@
 
 using namespace std;
 
+void menu();
+
 // devuelve cierto si el lexema es una palabra reservada
 bool esReservada(char lexema[]);
 
 int main(){
 
-	ifstream fin;
+    ifstream fin;
     ofstream fout;
 
-    fin.open("test2.txt");
+    int test_case;
+
+    menu();
+        cin >> test_case;
+
+        switch(test_case) {
+            case 1: {
+                fin.open("test1.txt");
+                break;
+            }
+            case 2: {
+                fin.open("test2.txt");
+                break;
+            }
+            case 3: {
+                fin.open("test3.txt");
+                break;
+            }
+            case 4: {
+                fin.open("test4.txt");
+                break;
+            }
+            case 5: {
+                fin.open("test5.txt");
+                break;
+            }
+            case 6: {
+                fin.open("test6.txt");
+                break;
+            }
+            case 0: {
+                cout << "Quitting LEX\n";
+                break;
+            }
+            default: {
+                cout << "Out of bounds\n";
+                break;
+            }
+        }
+
     fout.open("output.txt");
 
     char ch;
@@ -24,131 +65,141 @@ int main(){
     int j;
 
     while(!fin.eof()){
-    	ch = fin.get();
+        ch = fin.get();
 
-    	if (isalpha(ch) && isalnum(fin.peek())){
-    		do{
-    			lexema[j++] = ch;
-    			ch = fin.get();
-    		}while(isalnum(ch) && (ch != ' ' || ch != '\n'));
+        if (isalpha(ch) && isalnum(fin.peek())){
+            do{
+                lexema[j++] = ch;
+                ch = fin.get();
+            }while(isalnum(ch) && (ch != ' ' || ch != '\n'));
 
-    		lexema[j] = '\0';
-    		j = 0;
+            lexema[j] = '\0';
+            j = 0;
 
-    		if (esReservada(lexema)){
-    			cout << lexema << " : <palabraReservada>\n";
-    		}
-    		else{
-    			cout << lexema << " : <identificador>\n";
-    		}
-    	}
+            if (esReservada(lexema)){
+                fout << lexema << " : <palabraReservada>\n";
+            }
+            else{
+                fout << lexema << " : <identificador>\n";
+            }
+        }
 
-    	if (isdigit(ch) && isdigit(fin.peek())){
-    		do{
-    			lexema[j++] = ch;
-    			ch = fin.get();
-    		}while(isdigit(ch) && (ch != ' ' || ch != '\n'));
+        if (isdigit(ch) && isdigit(fin.peek())){
+            do{
+                lexema[j++] = ch;
+                ch = fin.get();
+            }while(isdigit(ch) && (ch != ' ' || ch != '\n'));
 
-    		lexema[j] = '\0';
-    		j = 0;
+            lexema[j] = '\0';
+            j = 0;
 
-    		cout << lexema << " : <numero>\n";
-    	}
+            fout << lexema << " : <numero>\n";
+        }
 
-    	else if (ch == '='){
-    		if (fin.peek() == '='){
-    			char a = fin.peek();
-    			cout << ch << a << " : <opRelacional>, IGU\n";
-    			ch = fin.get();
-    		}
-    		else{
-    			cout << ch << " : <opAsignacion>\n";
-    		}
-    	}
+        else if (ch == '='){
+            if (fin.peek() == '='){
+                char a = fin.peek();
+                fout << ch << a << " : <opRelacional>, IGU\n";
+                ch = fin.get();
+            }
+            else{
+                fout << ch << " : <opAsignacion>\n";
+            }
+        }
 
-    	else if (ch == '<'){
-    		if (fin.peek() == '='){
-    			char a = fin.peek();
-    			cout << ch << a << " : <opRelacional>, MEI\n";
-    			ch = fin.get();
-    		}
-    		else if (fin.peek() == '>'){
-    			char a = fin.peek();
-    			cout << ch << a << " : <opRelacional>, DIF\n";
-    			ch = fin.get();
-    		}
-    		else{
-    			cout << ch << " : <opRelacional>, MEN\n";
-    		}
-    	}
+        else if (ch == '<'){
+            if (fin.peek() == '='){
+                char a = fin.peek();
+                fout << ch << a << " : <opRelacional>, MEI\n";
+                ch = fin.get();
+            }
+            else if (fin.peek() == '>'){
+                char a = fin.peek();
+                fout << ch << a << " : <opRelacional>, DIF\n";
+                ch = fin.get();
+            }
+            else{
+                fout << ch << " : <opRelacional>, MEN\n";
+            }
+        }
 
-    	else if (ch == '>'){
-    		if (fin.peek() == '='){
-    			char a = fin.peek();
-    			cout << ch << a << " : <opRelacional>, MAI\n";
-    			ch = fin.get();
-    		}
-    		else{
-    			cout << ch << " : <opAsignacion>, MAY\n";
-    		}
-    	}
+        else if (ch == '>'){
+            if (fin.peek() == '='){
+                char a = fin.peek();
+                fout << ch << a << " : <opRelacional>, MAI\n";
+                ch = fin.get();
+            }
+            else{
+                fout << ch << " : <opRelacional>, MAY\n";
+            }
+        }
 
-    	else if (ch == '+'){
+        else if (ch == '+'){
 
-    		cout << ch << " : <opAritmetico>, SUM\n";
-    	}
+            fout << ch << " : <opAritmetico>, SUM\n";
+        }
 
-    	else if (ch == '-'){
+        else if (ch == '-'){
 
-    		cout << ch << " : <opAritmetico>, RES\n";
-    	}
+            fout << ch << " : <opAritmetico>, RES\n";
+        }
 
-    	else if (ch == '*'){
+        else if (ch == '*'){
 
-    		cout << ch << " : <opAritmetico>, MUL\n";
-    	}
+            fout << ch << " : <opAritmetico>, MUL\n";
+        }
 
-    	else if (ch == '/'){
-    		if (fin.peek() == '*'){
-    			do{
-    				ch = fin.get();
-    				ch = fin.get(); // añadido para evitar que lea el primer '*'como operador y el ultimo '/' como operador
-    			}while(ch != '*' && fin.peek() != '/');
-    			fin.get();
-    		}
+        else if (ch == '/'){
+            if (fin.peek() == '*'){
+                do{
+                    ch = fin.get();
+                    ch = fin.get(); // añadido para evitar que lea el primer '*'como operador y el ultimo '/' como operador
+                }while(ch != '*' && fin.peek() != '/');
+                fin.get();
+            }
 
-    		else{
-    			cout << ch << " : <opAritmetico>, DIF\n";
-    		}
-    	}
+            else{
+                fout << ch << " : <opAritmetico>, DIF\n";
+            }
+        }
 
-    	else if (ch == '('){
+        else if (ch == '('){
 
-    		cout << ch << " : <parentesisIzquierdo>\n";
-    	}
+            fout << ch << " : <parentesisIzquierdo>\n";
+        }
 
-    	else if (ch == ')'){
+        else if (ch == ')'){
 
-    		cout << ch << " : <parentesisDerecho>\n";
-    	}
+            fout << ch << " : <parentesisDerecho>\n";
+        }
 
-    	else if (ch == ';'){
+        else if (ch == ';'){
 
-    		cout << ch << " : <puntoComa>\n";
-    	}
+            fout << ch << " : <puntoComa>\n";
+        }
     }
 
     return 0;
 }
 
+void menu() {
+    cout << "1. Test case 1\n";
+    cout << "2. Test case 2\n";
+    cout << "3. Test case 3\n";
+    cout << "4. Test case 4\n";
+    cout << "5. Test case 5\n";
+    cout << "6. Test case 6\n";
+    cout << "0. Exit LEX\n";
+}
+
 bool esReservada(char lexema[]) {
 
-	char reservada[32][20] = {"inicio","final","Si","finsi","sino","Mientras","finmientras","Escribe"};
-	
-	for (int i = 0; i < 32; ++i) {
-		if (strcmp(reservada[i], lexema) == 0) {
-			return true;
-		}
-	}
-	return false;
+    char reservada[32][20] = {"inicio","final","Si","finsi","sino","Mientras","finmientras","Escribe"};
+    
+    for (int i = 0; i < 32; ++i) {
+        if (strcmp(reservada[i], lexema) == 0) {
+            return true;
+        }
+    }
+    return false;
 }
