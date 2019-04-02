@@ -22,7 +22,7 @@ int main(){
     menu();
         cin >> test_case;
 
-        switch(test_case) {
+        switch(test_case){
             case 1: {
                 fin.open("test1.txt");
                 break;
@@ -63,7 +63,11 @@ int main(){
     char lexema[20];
 
     int j;
+    int lineCount = 1;
 
+    // line counter for output
+    fout << "Line " << lineCount++ << ":\n\n";
+    
     while(!fin.eof()){
         ch = fin.get();
 
@@ -176,6 +180,11 @@ int main(){
         else if (ch == ';'){
 
             fout << ch << " : <puntoComa>\n";
+        }
+
+        // line counter for output
+        else if (ch == '\n'){
+            fout << "\nLine " << lineCount++ << ":\n\n";
         }
     }
 
