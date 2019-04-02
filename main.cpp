@@ -2,6 +2,8 @@
 #include <string>
 #include <cctype>
 #include <fstream>
+#include <stdio.h>
+#include <string.h>
 
 void menu() {
     std::cout << "1. Test case 1\n";
