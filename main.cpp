@@ -21,6 +21,18 @@ int main(){
 
     int test_case;
 
+    /*
+    // añnadir cuando terminemos con el menu de test case
+    abrirArchivoEntrada(fin);
+    */
+	fout.open("output.txt");
+
+    char ch;
+    char lexema[20];
+
+    int j;
+    int lineCount = 1;
+
     menu();
         cin >> test_case;
 
@@ -59,23 +71,11 @@ int main(){
             }
         }
 
-    /*
-    // añnadir cuando terminemos con el menu de test case
-    abrirArchivoEntrada(fin);
-    */
-
-    fout.open("output.txt");
-
-    char ch;
-    char lexema[20];
-
-    int j;
-    int lineCount = 1;
-
     // line counter for output
     fout << "Line " << lineCount++ << ":\n\n";
     
     while(!fin.eof()){
+    	bool error = false;
         ch = fin.get();
 
         if (isalpha(ch) && isalnum(fin.peek())){
@@ -85,13 +85,30 @@ int main(){
             }while(isalnum(ch) && (ch != ' ' || ch != '\n'));
 
             lexema[j] = '\0';
+
+            char c;
+            int i = 0;
+            while (lexema[i]){
+				c = lexema[i];
+				if (isupper(c)){
+					error = true;
+				}
+				if (error){
+					break;
+				}
+				i++;
+			}
+
             j = 0;
 
             if (esReservada(lexema)){
                 fout << lexema << " : <palabraReservada>\n";
             }
+            else if (error){
+	            fout << "[Error] " << "Linea " << lineCount-1 << ": " << "letras mayusculas no se permiten " << '\"' << lexema << "\"\n";
+	        }
             else{
-                fout << lexema << " : <identificador>\n";
+            	fout << lexema << " : <identificador>\n";
             }
         }
 
@@ -104,7 +121,7 @@ int main(){
             lexema[j] = '\0';
             j = 0;
 
-            fout << lexema << " : <numero>\n";
+            fout << lexema << " : <entero>\n";
         }
 
         else if (ch == '='){
@@ -193,7 +210,14 @@ int main(){
         else if (ch == '\n'){
             fout << "\nLine " << lineCount++ << ":\n\n";
         }
+
+        else if (ch != '+' && ch != '-' && ch != '*' && ch != '/' && ch != '(' && ch != ')' && ch != '=' && ch != ';' && ch != ' ' && ch != '\n'){
+        	fout << "Error en linea " << lineCount-1 << ' ' << ch << " is not defined\n\n";
+        }
     }
+
+    //fin.close("sourceCode.txt");
+    fout.close();
 
     return 0;
 }
@@ -203,7 +227,6 @@ void abrirArchivoEntrada(ifstream &fin){
     if (fin.fail()) {
         cout << "File sourceCode.txt does not exist.\n";
     }
-
 }
 
 void menu() {
