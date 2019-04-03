@@ -133,20 +133,37 @@ int main() {
             } else {
                 fout << '\"' << lexema << '\"' << " : <identificador>\n";
             }
-        } else if (isdigit(ch) && isdigit(fin.peek())) {
-            do {
+        } 
+
+        else if (isdigit(ch) && isdigit(fin.peek())){
+            do{
                 lexema[j++] = ch;
                 ch = fin.get();
-            } while (isdigit(ch) && (ch != ' ' || ch != '\n'));
-            
+            }while(isalnum(ch) && (ch != ' ' || ch != '\n'));
+
             lexema[j] = '\0';
+
+            char c;
+            int i = 0;
+            while (lexema[i]){
+                c = lexema[i];
+                if (!isdigit(c)){
+                    error = true;
+                }
+                if (error){
+                    break;
+                }
+                i++;
+            }
+
             j = 0;
-            
-            fout << '\"' << lexema << '\"' << " : <numero>\n";
-        }
-        
-        else if (isdigit(ch) && !isdigit(fin.peek())) {
-            fout << "[Error] Line " << lineCount - 1 << ": " << '\"' << ch << '\"' << " [single-digit numbers must have leading zero]\n";
+
+            if (error){
+                fout << "[Error] Line " << lineCount - 1 << ": " << '\"' << lexema << '\"' << " [Verify int]\n";
+            }
+            else{
+                fout << lexema << " : <entero>\n";
+            }
         }
         
         else if (ch == '='){
