@@ -12,6 +12,8 @@ void menu();
 // devuelve cierto si el lexema es una palabra reservada
 bool esReservada(char lexema[]);
 
+void abrirArchivoEntrada(ifstream &fin);
+
 int main(){
 
     ifstream fin;
@@ -56,6 +58,11 @@ int main(){
                 break;
             }
         }
+
+    /*
+    // añnadir cuando terminemos con el menu de test case
+    abrirArchivoEntrada(fin);
+    */
 
     fout.open("output.txt");
 
@@ -189,6 +196,14 @@ int main(){
     }
 
     return 0;
+}
+
+void abrirArchivoEntrada(ifstream &fin){
+    fin.open("sourceCode.txt");
+    if (fin.fail()) {
+        cout << "File sourceCode.txt does not exist.\n";
+    }
+
 }
 
 void menu() {
