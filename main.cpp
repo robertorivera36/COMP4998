@@ -103,37 +103,43 @@ int main() {
         ch = fin.get();
         
         if (isalpha(ch) && isalnum(fin.peek())){
-            do {
+            do{
                 lexema[j++] = ch;
                 ch = fin.get();
-            } while( isalnum(ch) && (ch != ' ' || ch != '\n'));
-            
+                if (!isalnum(ch)){ // concatenisa simbolos no permitidos al lexema ( evita salir del do while cuando ch = !isalnum)
+                    lexema[j++] = ch;
+                    ch = fin.get();
+                }
+
+            }while(isalnum(ch) && (ch != ' ' || ch != '\n'));
+
             lexema[j] = '\0';
-            
+
             char c;
-            int i = 0;
-            
-            while (lexema[i]) {
+            int i = 0, k = 0;
+            while (lexema[i]){
                 c = lexema[i];
-                if (isupper(c)) {
+                if (isupper(c)){
                     error = true;
                 }
-                if (error) {
+                if (error){
                     break;
                 }
                 i++;
             }
-            
+
             j = 0;
-            
-            if (esReservada(lexema)) {
-                fout << '\"' << lexema << '\"' << " : <palabraReservada>\n";
-            } else if (error) {
-                fout << "[Error] Line " << lineCount - 1 << ": " << '\"' << lexema << '\"' << " [words cannot have capitalized characters in them]" << "\n";
-            } else {
-                fout << '\"' << lexema << '\"' << " : <identificador>\n";
+
+            if (esReservada(lexema)){
+                fout << lexema << " : <palabraReservada>\n";
             }
-        } 
+            else if (error){
+                fout << "[Error] " << "Linea " << lineCount-1 << ": " << "letras mayusculas no se permiten " << '\"' << lexema << "\"\n";
+            }
+            else{
+                fout << lexema << " : <identificador>\n";
+            }
+        }
 
         else if (isdigit(ch) && isdigit(fin.peek())){
             do{
