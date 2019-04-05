@@ -1,4 +1,4 @@
 inicio
-	var = 0;
+	var = 00;
 	Escribe (var);
 final
