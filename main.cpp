@@ -15,9 +15,9 @@
 using namespace std;
 
 void abrirArchivoEntrada(ifstream &fin) {
-    fin.open("sourceCode.txt");
+    fin.open("sourcecode.txt");
     if (fin.fail()) {
-        cout << "File sourceCode.txt does not exist.\n";
+        cout << "File sourcecode.txt does not exist.\n";
     }
 }
 
@@ -33,9 +33,9 @@ void menu() {
 
 // devuelve cierto si el lexema es una palabra reservada
 bool esReservada(char lexema[]) {
-    
+
     char reservada[32][20] = {"inicio","final","Si","finsi","sino","Mientras","finmientras","Escribe"};
-    
+
     for (int i = 0; i < 32; ++i) {
         if (strcmp(reservada[i], lexema) == 0) {
             return true;
@@ -45,18 +45,18 @@ bool esReservada(char lexema[]) {
 }
 
 int main() {
-    
+
     ifstream fin;
     ofstream fout;
-    
+
     int test_case;
-    
+
     char ch;
     char lexema[20];
-    
+
     int j = 0;
     int lineCount = 1;
-    
+
     menu();
     cin >> test_case;
     switch(test_case) {
@@ -93,85 +93,81 @@ int main() {
             break;
         }
     }
-    
+
     fout.open("output.txt");
-    
+
     fout << "Line " << lineCount++ << ":\n";
-    
-    while (!fin.eof()) {
+
+    while (!fin.eof() && !(fin.peek() == '\xFF')) {
         bool error = false;
         ch = fin.get();
-        
-        if (isalpha(ch) && isalnum(fin.peek())){
-            do{
+
+        if (isalpha(ch) && isalnum(fin.peek())) {
+            do {
                 lexema[j++] = ch;
                 ch = fin.get();
-                if (!isalnum(ch)){ // concatenisa simbolos no permitidos al lexema ( evita salir del do while cuando ch = !isalnum)
-                    lexema[j++] = ch;
-                    ch = fin.get();
-                }
-
-            }while(isalnum(ch) && (ch != ' ' || ch != '\n'));
+            } while (isalnum(ch) && (ch != ' ' || ch != '\n'));
 
             lexema[j] = '\0';
+            j = 0;
 
-            char c;
-            int i = 0, k = 0;
-            while (lexema[i]){
-                c = lexema[i];
-                if (isupper(c)){
-                    error = true;
-                }
-                if (error){
-                    break;
-                }
-                i++;
+            int i = 0;
+
+            while (lexema[i]) {
+              if (isupper(lexema[i])) {
+                error = true;
+              }
+              if (error) {
+                break;
+              }
+              i++;
             }
 
-            j = 0;
+            /*for (int i = 0; !error; i++) {
+              if (isupper(lexema[i])) {
+                error = true;
+              }
+            }*/
 
             if (esReservada(lexema)){
-                fout << lexema << " : <palabraReservada>\n";
+                fout << '\"' << lexema << '\"' << " : <palabraReservada>\n";
             }
-            else if (error){
-                fout << "[Error] " << "Linea " << lineCount-1 << ": " << "letras mayusculas no se permiten " << '\"' << lexema << "\"\n";
+            else if (error) {
+                fout << "[Error] Line " << lineCount - 1 << ": " << '\"' << lexema << '\"' << " [words cannot have capitalized letters in them]\n";
             }
             else{
-                fout << lexema << " : <identificador>\n";
+                fout << '\"' << lexema << '\"' << " : <identificador>\n";
             }
         }
 
-        else if (isdigit(ch) && isdigit(fin.peek())){
-            do{
+        else if (isdigit(ch) && isdigit(fin.peek())) {
+            do {
                 lexema[j++] = ch;
                 ch = fin.get();
-            }while(isalnum(ch) && (ch != ' ' || ch != '\n'));
+            } while (isalnum(ch) && (ch != ' ' || ch != '\n'));
 
             lexema[j] = '\0';
 
-            char c;
-            int i = 0;
-            while (lexema[i]){
-                c = lexema[i];
-                if (!isdigit(c)){
-                    error = true;
-                }
-                if (error){
-                    break;
-                }
-                i++;
+            for (int i = 0; error; ++i) {
+              if (!isdigit(lexema[i])) {
+                error = true;
+              }
             }
 
             j = 0;
 
-            if (error){
-                fout << "[Error] Line " << lineCount - 1 << ": " << '\"' << lexema << '\"' << " [Verify int]\n";
+            if (error) {
+                fout << "[Error] Line " << lineCount - 1 << ": " << '\"' << lexema << '\"' << " [verifity integer]\n";
             }
             else{
-                fout << lexema << " : <entero>\n";
+                fout << '\"' << lexema << '\"' << " : <numero>\n";
             }
         }
-        
+
+        else if (isdigit(ch) && !isdigit(fin.peek())) {
+          fout << "[Error] Line " << lineCount - 1 << ": " << '\"' << ch << '\"' << " [single-digit numbers must have leading zero]\n";
+        }
+
         else if (ch == '='){
             if (fin.peek() == '=') {
                 char a = fin.peek();
@@ -181,7 +177,7 @@ int main() {
                 fout << '\"' << ch << '\"' << " : <asignacion>\n";
             }
         }
-        
+
         else if (ch == '<') {
             if (fin.peek() == '=') {
                 char a = fin.peek();
@@ -195,7 +191,7 @@ int main() {
                 fout << '\"' << ch << '\"' << " : <opRelacional>, MEN\n";
             }
         }
-        
+
         else if (ch == '>') {
             if (fin.peek() == '=') {
                 char a = fin.peek();
@@ -205,19 +201,19 @@ int main() {
                 fout << '\"' << ch << '\"' << " : <opRelacional>, MAY\n";
             }
         }
-        
+
         else if (ch == '+') {
             fout << '\"' << ch << '\"' << " : <opAritmetico>, SUM\n";
         }
-        
+
         else if (ch == '-') {
             fout << '\"' << ch << '\"' << " : <opAritmetico>, RES\n";
         }
-        
+
         else if (ch == '*') {
             fout << '\"' << ch << '\"' << " : <opAritmetico>, MUL\n";
         }
-        
+
         else if (ch == '/') {
             if (fin.peek() == '*') {
                 do {
@@ -227,32 +223,28 @@ int main() {
                 } while (ch != '*' && fin.peek() != '/');
                 fin.get();
             } else {
-                fout << '\"' << ch << '\"' << " : <opAritmetico>, DIF\n";
+                fout << '\"' << ch << '\"' << " : <opAritmetico>, DIV\n";
             }
         }
-        
+
         else if (ch == '(') {
             fout << '\"' << ch << '\"' << " : <parentesisIzquierdo>\n";
         }
-        
+
         else if (ch == ')') {
             fout << '\"' << ch << '\"' << " : <parentesisDerecho>\n";
         }
-        
+
         else if (ch == ';') {
             fout << '\"' << ch << '\"' << " : <puntoComa>\n";
         }
-        
-        else if (ch == '\n') {
-            fout << "Line " << lineCount++ << ":\n";
+
+        else if (ch == '\n' && !(fin.peek() == '\xFF')) {
+            fout << "LINE " << lineCount++ << "\n";
         }
-        
-        else if (ch == '\xFF') {
-            fout << "END OF FILE\n";
-        }
-        
+
         else if (ch != '+' && ch != '-' && ch != '*' && ch != '/' && ch != '(' && ch != ')' && ch != '=' && ch != ';' && ch != '\t' && ch != ' ' && ch != '\n') {
-            fout << "[Error]  Line " << lineCount - 1 << ": " << ch << " is not defined\n";
+            fout << "[Error]  Line " << lineCount - 1 << ": " << ch << " [not defined]\n";
         }
     }
     fin.close();
