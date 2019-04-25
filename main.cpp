@@ -125,7 +125,7 @@ int main() {
             j = 0;
 
             if (esReservada(lexema)) {
-                fout << '\"' << lexema << '\"' << " : <palabraReservada>\n";
+                fout << '\"' << lexema << '\"' << " : <palabraReservada : " << lexema << ">\n";
             }
             else if (error) {
                 fout << "[Error] Line " << lineCount - 1 << ": " << '\"' << lexema << '\"' << " [words cannot have capitalized letters in them]\n";
