@@ -109,7 +109,6 @@ int main() {
             } while (isalnum(ch) && (ch != ' ' || ch != '\n'));
 
             lexema[j] = '\0';
-            j = 0;
 
             int i = 0;
 
@@ -123,13 +122,9 @@ int main() {
               i++;
             }
 
-            /*for (int i = 0; !error; i++) {
-              if (isupper(lexema[i])) {
-                error = true;
-              }
-            }*/
+            j = 0;
 
-            if (esReservada(lexema)){
+            if (esReservada(lexema)) {
                 fout << '\"' << lexema << '\"' << " : <palabraReservada>\n";
             }
             else if (error) {
@@ -148,10 +143,16 @@ int main() {
 
             lexema[j] = '\0';
 
-            for (int i = 0; error; ++i) {
+            int i = 0;
+
+            while (lexema[i]) {
               if (!isdigit(lexema[i])) {
                 error = true;
               }
+              if (error) {
+                break;
+              }
+              i++;
             }
 
             j = 0;
@@ -164,7 +165,7 @@ int main() {
             }
         }
 
-        else if (isdigit(ch) && !isdigit(fin.peek())) {
+        if (isdigit(ch) && !isdigit(fin.peek())) {
           fout << "[Error] Line " << lineCount - 1 << ": " << '\"' << ch << '\"' << " [single-digit numbers must have leading zero]\n";
         }
 
