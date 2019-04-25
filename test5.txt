@@ -1,5 +1,0 @@
-inicio
-	bono = 5;
-	balance = 4096:
-	Escribe (bono * balance);
-final

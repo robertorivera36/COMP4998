@@ -1,3 +1,0 @@
-inicio
-	multiplicacion = 423rer3 * subtotal * tax;
-final

@@ -32,7 +32,7 @@ int main(){
 
 	while (!fin.eof()){
 		fin >> token;
-		
+
 		if (esToken(token)){
 			cout << token << endl;
 		}
@@ -50,7 +50,10 @@ void abrirArchivoEntrada(ifstream &fin) {
 
 bool esToken(string token){
 
-	string tokenArray[] = {"<palabraReservada>", "<identificador>", "<opRelacional>", "<opAritmetico", "<asignacion>",
+	string tokenArray[] = {
+	"<palabraReservada:inicio>","<palabraReservada:final>","<palabraReservada:Si>","<palabraReservada:finsi>",
+	"<palabraReservada:sino>","<palabraReservada:Mientras>","<palabraReservada:finmientras>","<palabraReservada:Escribe>",
+	"<identificador>", "<opRelacional>", "<opAritmetico", "<asignacion>",
 	"<parentesisIzquierdo>", "<parentesisDerecho>", "<puntoComa>", "<numero>"};
 
 	int size = sizeof(tokenArray)/sizeof(tokenArray[0]);

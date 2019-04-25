@@ -1,15 +1,15 @@
 Line 1:
-"inicio" : <palabraReservada>
+"inicio" : <palabraReservada:inicio>
 LINE 2
 "var" : <identificador>
 "=" : <asignacion>
 "00" : <numero>
 ";" : <puntoComa>
 LINE 3
-"Escribe" : <palabraReservada>
+"Escribe" : <palabraReservada:Escribe>
 "(" : <parentesisIzquierdo>
 "var" : <identificador>
 ")" : <parentesisDerecho>
 ";" : <puntoComa>
 LINE 4
-"final" : <palabraReservada>
+"final" : <palabraReservada:final>
