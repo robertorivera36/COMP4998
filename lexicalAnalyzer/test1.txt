@@ -1,0 +1,3 @@
+inicio
+    multipliCacion = 42 * subtotal * tax;
+final
