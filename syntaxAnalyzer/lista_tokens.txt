@@ -1,15 +1,15 @@
-1
+LINE 1
 <palabraReservada:inicio>
-2
+LINE 2
 <identificador>
 <opAsignacion>
 <numero>
 <puntoComa>
-3
+LINE 3
 <palabraReservada:Escribe>
 <parentesisIzquierdo>
 <identificador>
 <parentesisDerecho>
 <puntoComa>
-4
+LINE 4
 <palabraReservada:final>

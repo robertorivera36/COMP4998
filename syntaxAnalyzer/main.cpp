@@ -16,7 +16,7 @@
 using namespace std;
 
 // Abre archivo de salida del analizador lexico
-void abrirArchivoEntrada(ifstream &fin);
+void abrirArchivoEntrada(ifstream &fin, string archivo);
 
 // Devuelve cierto si el string es un token
 bool esToken(string token);
@@ -34,36 +34,43 @@ int main(){
 	bool instruccion;
 	bool asignacion, instSi, instEscribe, instMientras;
 
-	abrirArchivoEntrada(fin);
-	fout.open("listaTokens.txt");
+	abrirArchivoEntrada(fin, "lex_output.txt");
+	fout.open("lista_tokens.txt");
 
+	// Extrae lista de tokens de lex_output.txt, luego la inserta a lista_tokens.txt
 	while (!fin.eof()){
 		fin >> token;
 
 		if (token == "LINE"){
 			lineCount++;
-			cout << lineCount << endl;
-			fout << lineCount << endl;
+			cout << "LINE " << lineCount << "\n";
+			fout << "LINE " << lineCount << "\n";
 		}
 
+		// Si utilizar lista_tokens.txt no funciona, hacer todo dentro de este else if
 		else if (esToken(token)){
 			cout << token << endl;
 			fout << token << endl;
-
-			if
 		}
 	}
 
 	fin.close();
     fout.close();
 
+    abrirArchivoEntrada(fin, "lista_tokens.txt");
+
 	return 0;
 }
 
-void abrirArchivoEntrada(ifstream &fin) {
-	fin.open("lex_output.txt");
+void abrirArchivoEntrada(ifstream &fin, string archivo) {
+	fin.open(archivo);
 	if (fin.fail()) {
-		cout << "File lex_output.txt does not exist.\n";
+		if (archivo == "lex_output.txt"){
+			cout << "File lex_output.txt does not exist.\n";
+		}
+		else if (archivo == "lista_tokens.txt"){
+			cout << "File lista_tokens.txt does not exist.\n";
+		}
 	}
 }
 
