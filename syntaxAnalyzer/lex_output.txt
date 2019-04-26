@@ -2,7 +2,7 @@ Line 1:
 "inicio" : <palabraReservada:inicio>
 LINE 2
 "var" : <identificador>
-"=" : <asignacion>
+"=" : <opAsignacion>
 "00" : <numero>
 ";" : <puntoComa>
 LINE 3

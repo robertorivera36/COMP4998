@@ -175,7 +175,7 @@ int main() {
                 fout << '\"' << ch << a << '\"' << " : <opRelacional>, IGU\n";
                 ch = fin.get();
             } else {
-                fout << '\"' << ch << '\"' << " : <asignacion>\n";
+                fout << '\"' << ch << '\"' << " : <opAsignacion>\n";
             }
         }
 
