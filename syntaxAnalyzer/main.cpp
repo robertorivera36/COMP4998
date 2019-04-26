@@ -21,13 +21,19 @@ void abrirArchivoEntrada(ifstream &fin, string archivo);
 // Devuelve cierto si el string es un token
 bool esToken(string token);
 
+bool esSecuenciaInst(ifstream &fin, string &token);
+bool esInstruccion(ifstream &fin, string &token);
+
 bool esAsignacion(ifstream &fin, string &token);
 bool esSi(ifstream &fin, string &token);
 bool esEscribe(ifstream &fin, string &token);
 bool esMientras(ifstream &fin, string &token);
 
+bool esExpParentesis(ifstream &fin, string &token);
 bool esExpresion(ifstream &fin, string &token);
 bool esFactor (ifstream &fin, string &token);
+
+bool esOpBinario(ifstream &fin, string &token);
 
 int main(){
 
@@ -38,11 +44,6 @@ int main(){
 
 	string token;
 
-	bool secuenciaInst;
-	bool instruccion;
-	bool asignacion, instSi, instEscribe, instMientras;
-	bool expresion;
-
 	abrirArchivoEntrada(fin, "lex_output.txt");
 	fout.open("lista_tokens.txt");
 
@@ -52,7 +53,7 @@ int main(){
 
 		if (token == "LINE"){
 			lineCount++;
-			cout << "LINE " << lineCount << "\n";
+			//cout << "LINE " << lineCount << "\n";
 			//fout << "LINE " << lineCount << "\n";
 		}
 
@@ -60,11 +61,11 @@ int main(){
 		else if (esToken(token)){
 			// Para evitar que al final haya una linea vacia que causa que el ultimo token este duplicado
 			if (token == "<palabraReservada:final>"){
-				cout << token;
+				//cout << token;
 				fout << token;
 			}
 			else{
-				cout << token << endl;
+				//cout << token << endl;
 				fout << token << endl;
 			}
 		}
@@ -73,30 +74,29 @@ int main(){
 	fin.close();
 	fout.close();
 
-	abrirArchivoEntrada(fin, "lista_tokens.txt");
+	abrirArchivoEntrada(fin, "test.txt");
 
 	while (!fin.eof()){
 		fin >> token;
 
-		if (token == "<palabraReservada:inicio>"){
-			fin >> token;
+		if (esAsignacion(fin, token)){
+			cout << "Encontre una asignacion!!!\n";
+		}
 
-			if (token == "<identificador>" || token == "<palabraReservada:Si>" || token == "<palabraReservada:Escribe>" || "<palabraReservada:Mientras>"){
+		if (esInstruccion(fin, token)){
+			cout << "Encontre una instruccion!!!\n";
+		}
 
-				// <asignacion>
-				if (esAsignacion(fin, token)){
-					// code
-				}
-				else if (esSi(fin, token)){
-					// code
-				}
-				else if (esEscribe(fin, token)){
-					// code
-				}
-				else if (esMientras(fin, token)){
-					// code
-				}
-			}
+		if (esExpresion(fin, token)){
+			cout << "Encontre una expresion!!!\n";
+		}
+
+		if (esOpBinario(fin, token)){
+			cout << "Encontre un OpBinario!!!\n";
+		}
+
+		if (esExpParentesis(fin, token)){
+			cout << "Encontre una expParentesis!!!\n";
 		}
 	}
 
@@ -116,11 +116,10 @@ void abrirArchivoEntrada(ifstream &fin, string archivo) {
 }
 
 bool esToken(string token){
-
 	string tokenArray[] = {
 	"<palabraReservada:inicio>","<palabraReservada:final>","<palabraReservada:Si>","<palabraReservada:finsi>",
 	"<palabraReservada:sino>","<palabraReservada:Mientras>","<palabraReservada:finmientras>","<palabraReservada:Escribe>",
-	"<identificador>", "<opRelacional>", "<opAritmetico", "<opAsignacion>",
+	"<identificador>", "<opRelacional>", "<opAritmetico>", "<opAsignacion>",
 	"<parentesisIzquierdo>", "<parentesisDerecho>", "<puntoComa>", "<numero>"};
 
 	int size = sizeof(tokenArray)/sizeof(tokenArray[0]);
@@ -133,24 +132,22 @@ bool esToken(string token){
 	return false;
 }
 
-bool esAsignacion(ifstream &fin, string &token){
-	if (token == "<identificador>"){
+bool esSecuenciaInst(ifstream &fin, string &token){
+	if (esInstruccion(fin, token)){
+
 		fin >> token;
 
-		if (token == "<opAsignacion>"){
-			fin >> token;
+		if (esSecuenciaInst(fin, token)){
 
-			//<factor>
-			if (token == "<identificador>" || token == "<numero>" || token == "<parentesisIzquierdo>"){
+			return true;
+		}
+		else if (esInstruccion(fin, token)){
 
-				//<expParentesis>
-				if (token == "<parentesisIzquierdo>"){
-					fin >> token;
-				}
-				else{
-					fin >> token;
-				}
-			}
+			return true;
+		}
+		else{
+
+			return false;
 		}
 	}
 	else{
@@ -158,12 +155,162 @@ bool esAsignacion(ifstream &fin, string &token){
 	}
 }
 
-bool esSi(ifstream &fin, string &token){
-	// code
+bool esInstruccion(ifstream &fin, string &token){ // (Must test potential flaw) si el primero es falso el token ya se movio
+	if (esAsignacion(fin, token) || esSi(fin, token) || esEscribe(fin, token) || esMientras(fin, token)){
+
+		return true;
+	}
+	else{
+
+		return false;
+	}
 }
+
+bool esAsignacion(ifstream &fin, string &token){
+	if (token == "<identificador>"){
+
+		fin >> token;
+
+		if (token == "<opAsignacion>"){
+
+			fin >> token;
+
+			if (esExpresion(fin, token)){
+
+				fin >> token;
+
+				if (token == "<puntoComa>"){
+
+					return true;
+				}
+			}
+		}
+	}
+	else{
+
+		return false;
+	}
+
+	return false;
+}
+
+bool esSi(ifstream &fin, string &token){
+	if (token == "<palabraReservada:Si>"){
+
+		fin >> token;
+
+		if (esExpParentesis(fin, token)){
+			
+			fin >> token;
+
+			if (esSecuenciaInst(fin, token)){
+
+				fin >> token;
+
+				if (token == "<palabraReservada:sino>"){
+
+					fin >> token;
+
+					if (esSecuenciaInst(fin, token)){
+						
+						return true;
+					}
+				}
+				else if (token == "<palabraReservada:finsi>"){
+
+					return true;
+				}
+				else{
+
+					return false;
+				}
+			}
+		}
+	}
+	else{
+
+		return false;
+	}
+
+	return false;
+}
+
 bool esEscribe(ifstream &fin, string &token){
 	// code
 }
+
 bool esMientras(ifstream &fin, string &token){
 	// code
+}
+
+bool esExpParentesis(ifstream &fin, string &token){
+	if (token == "<parentesisIzquierdo>"){
+
+		fin >> token;
+
+		if (esExpresion(fin, token)){
+
+			fin >> token;
+
+			if (token == "<parentesisDerecho>"){
+
+				return true;
+			}
+		}
+	}
+	else{
+
+		return false;
+	}
+
+	return false;
+}
+
+bool esExpresion(ifstream &fin, string &token){
+	if (esFactor(fin, token)){
+		
+		fin >> token;
+
+		if (esOpBinario(fin, token)){
+
+			fin >> token;
+
+			if (esExpresion(fin, token)){
+				
+				return true;
+			}
+		}
+		else{
+
+			return true;
+		}
+	}
+	else{
+
+		return false;
+	}
+
+	return false;
+}
+
+bool esFactor(ifstream &fin, string &token){
+	if (token == "<numero>" || token == "<identificador>" || esExpParentesis(fin, token)){
+
+		return true;
+	}
+	else{
+
+		return false;
+	}
+}
+
+bool esOpBinario(ifstream &fin, string &token){
+	if (token == "<opAritmetico>" || token == "<opRelacional>"){
+
+		return true;
+	}
+	else{
+
+		return false;
+	}
 }
