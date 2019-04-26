@@ -96,7 +96,7 @@ int main() {
 
     fout.open("output.txt");
 
-    fout << "Line " << lineCount++ << ":\n";
+    fout << "LINE " << lineCount++ << "\n";
 
     while (!fin.eof() && !(fin.peek() == '\xFF')) {
         bool error = false;

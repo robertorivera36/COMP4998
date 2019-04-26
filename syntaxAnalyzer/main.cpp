@@ -26,17 +26,31 @@ int main(){
 	ifstream fin;
 	ofstream fout;
 
-	abrirArchivoEntrada(fin);
-	fout.open("listaTokens.txt");
+	int lineCount;
 
 	string token;
+
+	bool secuenciaInst;
+	bool instruccion;
+	bool asignacion, instSi, instEscribe, instMientras;
+
+	abrirArchivoEntrada(fin);
+	fout.open("listaTokens.txt");
 
 	while (!fin.eof()){
 		fin >> token;
 
-		if (esToken(token)){
+		if (token == "LINE"){
+			lineCount++;
+			cout << lineCount << endl;
+			fout << lineCount << endl;
+		}
+
+		else if (esToken(token)){
 			cout << token << endl;
 			fout << token << endl;
+
+			if
 		}
 	}
 

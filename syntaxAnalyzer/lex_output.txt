@@ -1,4 +1,4 @@
-Line 1:
+LINE 1
 "inicio" : <palabraReservada:inicio>
 LINE 2
 "var" : <identificador>
