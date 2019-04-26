@@ -166,6 +166,7 @@ int main() {
         }
 
         if (isdigit(ch) && !isdigit(fin.peek())) {
+
           fout << "[Error] Line " << lineCount - 1 << ": " << '\"' << ch << '\"' << " [single-digit numbers must have leading zero]\n";
         }
 
@@ -204,14 +205,17 @@ int main() {
         }
 
         else if (ch == '+') {
+
             fout << '\"' << ch << '\"' << " : <opAritmetico>, SUM\n";
         }
 
         else if (ch == '-') {
+
             fout << '\"' << ch << '\"' << " : <opAritmetico>, RES\n";
         }
 
         else if (ch == '*') {
+
             fout << '\"' << ch << '\"' << " : <opAritmetico>, MUL\n";
         }
 
@@ -229,22 +233,27 @@ int main() {
         }
 
         else if (ch == '(') {
+
             fout << '\"' << ch << '\"' << " : <parentesisIzquierdo>\n";
         }
 
         else if (ch == ')') {
+
             fout << '\"' << ch << '\"' << " : <parentesisDerecho>\n";
         }
 
         else if (ch == ';') {
+
             fout << '\"' << ch << '\"' << " : <puntoComa>\n";
         }
 
         else if (ch == '\n' && !(fin.peek() == '\xFF')) {
+
             fout << "LINE " << lineCount++ << "\n";
         }
 
         else if (ch != '+' && ch != '-' && ch != '*' && ch != '/' && ch != '(' && ch != ')' && ch != '=' && ch != ';' && ch != '\t' && ch != ' ' && ch != '\n') {
+            
             fout << "[Error]  Line " << lineCount - 1 << ": " << ch << " [not defined]\n";
         }
     }

@@ -1,0 +1,11 @@
+<palabraReservada:inicio>
+<identificador>
+<opAsignacion>
+<numero>
+<puntoComa>
+<palabraReservada:Escribe>
+<parentesisIzquierdo>
+<identificador>
+<parentesisDerecho>
+<puntoComa>
+<palabraReservada:final>

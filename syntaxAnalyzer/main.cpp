@@ -27,6 +27,7 @@ int main(){
 	ofstream fout;
 
 	abrirArchivoEntrada(fin);
+	fout.open("listaTokens.txt");
 
 	string token;
 
@@ -35,8 +36,12 @@ int main(){
 
 		if (esToken(token)){
 			cout << token << endl;
+			fout << token << endl;
 		}
 	}
+
+	fin.close();
+    fout.close();
 
 	return 0;
 }
@@ -53,7 +58,7 @@ bool esToken(string token){
 	string tokenArray[] = {
 	"<palabraReservada:inicio>","<palabraReservada:final>","<palabraReservada:Si>","<palabraReservada:finsi>",
 	"<palabraReservada:sino>","<palabraReservada:Mientras>","<palabraReservada:finmientras>","<palabraReservada:Escribe>",
-	"<identificador>", "<opRelacional>", "<opAritmetico", "<asignacion>",
+	"<identificador>", "<opRelacional>", "<opAritmetico", "<opAsignacion>",
 	"<parentesisIzquierdo>", "<parentesisDerecho>", "<puntoComa>", "<numero>"};
 
 	int size = sizeof(tokenArray)/sizeof(tokenArray[0]);
