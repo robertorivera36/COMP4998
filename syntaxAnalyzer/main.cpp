@@ -201,7 +201,7 @@ bool esAsignacion(ifstream &fin, string &token){
 
 				return true;
 
-				/* Commented out because asignacion should not end in ';', even if it does for some reason it never enters this if statement
+				/* Commented out because asignacion should not end in ';', even if it does for some reason it never enters this if statement */
 				/*if (token == "<puntoComa>"){
 					cout << "esAsignacion: if 4 --returns true--\n";
 
