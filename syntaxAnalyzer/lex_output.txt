@@ -6,10 +6,26 @@ LINE 2
 "00" : <numero>
 ";" : <puntoComa>
 LINE 3
+"Mientras" : <palabraReservada:Mientras>
+"(" : <parentesisIzquierdo>
+"var" : <identificador>
+">" : <opRelacional> , MAY
+"10" : <numero>
+")" : <parentesisDerecho>
+LINE 4
 "Escribe" : <palabraReservada:Escribe>
 "(" : <parentesisIzquierdo>
 "var" : <identificador>
 ")" : <parentesisDerecho>
 ";" : <puntoComa>
-LINE 4
+LINE 5
+"var" : <identificador>
+"=" : <opAsignacion>
+"var" : <identificador>
+"-" : <opAritmetico>, RES
+"01" : <numero>
+";" : <puntoComa>
+LINE 6
+"finmientras" : <palabraReservada:finmientras>
+LINE 7
 "final" : <palabraReservada:final>

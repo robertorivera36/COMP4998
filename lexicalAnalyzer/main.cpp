@@ -173,7 +173,7 @@ int main() {
         else if (ch == '='){
             if (fin.peek() == '=') {
                 char a = fin.peek();
-                fout << '\"' << ch << a << '\"' << " : <opRelacional>, IGU\n";
+                fout << '\"' << ch << a << '\"' << " : <opRelacional> , IGU\n";
                 ch = fin.get();
             } else {
                 fout << '\"' << ch << '\"' << " : <opAsignacion>\n";
@@ -183,24 +183,24 @@ int main() {
         else if (ch == '<') {
             if (fin.peek() == '=') {
                 char a = fin.peek();
-                fout << '\"' << ch << a << '\"' << " : <opRelacional>, MEI\n";
+                fout << '\"' << ch << a << '\"' << " : <opRelacional> , MEI\n";
                 ch = fin.get();
             } else if (fin.peek() == '>') {
                 char a = fin.peek();
-                fout << '\"' << ch << a << '\"' << " : <opRelacional>, DIF\n";
+                fout << '\"' << ch << a << '\"' << " : <opRelacional> , DIF\n";
                 ch = fin.get();
             } else{
-                fout << '\"' << ch << '\"' << " : <opRelacional>, MEN\n";
+                fout << '\"' << ch << '\"' << " : <opRelacional> , MEN\n";
             }
         }
 
         else if (ch == '>') {
             if (fin.peek() == '=') {
                 char a = fin.peek();
-                fout << '\"' << ch << a << '\"' << " : <opRelacional>, MAI\n";
+                fout << '\"' << ch << a << '\"' << " : <opRelacional> , MAI\n";
                 ch = fin.get();
             } else {
-                fout << '\"' << ch << '\"' << " : <opRelacional>, MAY\n";
+                fout << '\"' << ch << '\"' << " : <opRelacional> , MAY\n";
             }
         }
 

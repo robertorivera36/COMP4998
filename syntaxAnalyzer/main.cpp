@@ -2,8 +2,8 @@
 //  main.cpp
 //  COMP4998
 //
-//  Created by George Perez, Roberto Rivera, Andres Garcia on 4/25/19.
-//  Copyright © 2019 George Perez, Roberto Rivera, Andres Garcia. All rights reserved.
+//  Created by Roberto Rivera, George Perez, Andres Garcia on 4/25/19.
+//  Copyright © 2019 Roberto Rivera, George Perez, Andres Garcia. All rights reserved.
 //
 
 #include <iostream>
@@ -79,15 +79,23 @@ int main(){
 	while (!fin.eof()){
 		fin >> token;
 
-		if (esAsignacion(fin, token)){
+		if (esMientras(fin, token)){
+			cout << "ENCONTRE UN MIENTRAS!!!\n\n";
+		}
+
+		if (esEscribe(fin, token)){
+			cout << "Encontre un escribe!!!\n\n";
+		}
+
+		/*if (esAsignacion(fin, token)){
 			cout << "Encontre una asignacion!!!\n";
-		}
+		}*/
 
-		if (esInstruccion(fin, token)){
+		/*if (esInstruccion(fin, token)){
 			cout << "Encontre una instruccion!!!\n";
-		}
+		}*/
 
-		if (esExpresion(fin, token)){
+		/*if (esExpresion(fin, token)){
 			cout << "Encontre una expresion!!!\n";
 		}
 
@@ -97,7 +105,7 @@ int main(){
 
 		if (esExpParentesis(fin, token)){
 			cout << "Encontre una expParentesis!!!\n";
-		}
+		}*/
 	}
 
 	return 0;
@@ -134,29 +142,38 @@ bool esToken(string token){
 
 bool esSecuenciaInst(ifstream &fin, string &token){
 	if (esInstruccion(fin, token)){
+		cout << "esSecuenciaInst: if 1\n";
 
 		fin >> token;
 
 		if (esSecuenciaInst(fin, token)){
+			cout << "esSecuenciaInst: if 2 --returns true--\n";
 
 			return true;
 		}
 		else if (esInstruccion(fin, token)){
+			cout << "esSecuenciaInst: else if 2 --returns true--\n";
 
 			return true;
 		}
+		else if (token == "<palabraReservada:finmientras>"){ // Aqui poner palabras reservadas de terminacion de inst
+			return true;
+		}
 		else{
+			cout << "esSecuenciaInst: if 2 --returns false--\n";
 
 			return false;
 		}
 	}
 	else{
+		cout << "esSecuenciaInst: if 1 --returns false--\n";
+
 		return false;
 	}
 }
 
 bool esInstruccion(ifstream &fin, string &token){ // (Must test potential flaw) si el primero es falso el token ya se movio
-	if (esAsignacion(fin, token) || esSi(fin, token) || esEscribe(fin, token) || esMientras(fin, token)){
+	if (esMientras(fin, token) || esEscribe(fin, token)){
 
 		return true;
 	}
@@ -231,66 +248,175 @@ bool esSi(ifstream &fin, string &token){
 
 		return false;
 	}
-
-	return false;
 }
 
 bool esEscribe(ifstream &fin, string &token){
-	// code
-}
+	cout << token << endl;
 
-bool esMientras(ifstream &fin, string &token){
-	// code
-}
-
-bool esExpParentesis(ifstream &fin, string &token){
-	if (token == "<parentesisIzquierdo>"){
+	if (token == "<palabraReservada:Escribe>"){
+		cout << "esEscribe: if 1\n";
 
 		fin >> token;
+		cout << token << endl;
 
-		if (esExpresion(fin, token)){
+		if (esExpParentesis(fin, token)){
+			cout << "esEscribe: if 2\n";
 
 			fin >> token;
+			cout << token << endl;
 
-			if (token == "<parentesisDerecho>"){
+			if (token == "<puntoComa>"){
+				cout << "esEscribe: if 3 --returns true--\n";
 
 				return true;
 			}
-		}
-	}
-	else{
+			else{
+				cout << "esEscribe: else 3 --returns false--\n";
 
-		return false;
-	}
-
-	return false;
-}
-
-bool esExpresion(ifstream &fin, string &token){
-	if (esFactor(fin, token)){
-		
-		fin >> token;
-
-		if (esOpBinario(fin, token)){
-
-			fin >> token;
-
-			if (esExpresion(fin, token)){
-				
-				return true;
+				return false;
 			}
 		}
 		else{
+			cout << "esEscribe: else 2 --returns false--\n";
+
+			return false;
+		}
+	}
+	else{
+		cout << "esEscribe: else 1 --returns false--\n";
+
+		return false;
+	}
+}
+
+bool esMientras(ifstream &fin, string &token){
+	cout << token << endl;
+
+	if (token == "<palabraReservada:Mientras>"){
+		cout << "esMientras: if 1\n";
+
+		fin >> token;
+		cout << token << endl;
+
+		if (esExpParentesis(fin, token)){
+			cout << "esMientras: if 2\n";
+
+			fin >> token;
+			cout << token << endl;
+
+			if (esSecuenciaInst(fin, token)){ // originalmente esSecuenciaInst
+				cout << "esMientras: if 3\n";
+
+				fin >> token;
+				cout << token << endl;
+
+				if (token == "<palabraReservada:finmientras>"){
+					cout << "esMientras: if 4 --returns true--\n";
+
+					return true;
+				}
+				else{
+					cout << "esMientras: else 4 --returns false--\n";
+
+					return false;
+				}
+			}
+			else{
+				cout << "esMientras: else 3 --returns false--\n";
+
+				return false;
+			}
+		}
+		else{
+			cout << "esMientras: else 2 --returns false--\n";
+
+			return false;
+		}
+	}
+	else{
+		cout << "esMientras: else 1 --returns false--\n";
+
+		return false;
+	}
+}
+
+bool esExpParentesis(ifstream &fin, string &token){
+	cout << token << endl;
+
+	if (token == "<parentesisIzquierdo>"){
+		cout << "esExpParentesis: if 1\n";
+
+		fin >> token;
+		cout << token << endl;
+
+		if (esExpresion(fin, token)){
+			cout << "esExpParentesis: if 2\n";
+
+			// aqui ya estoy en parentesisDerecho al coger el prox lo brincamos
+			//fin >> token;
+			cout << token << endl;
+
+			if (token == "<parentesisDerecho>"){
+				cout << "esExpParentesis: if 3 --returns true--\n";
+
+				return true;
+			}
+			else{
+				cout << "esExpParentesis: else 3 --returns false--\n";
+
+				return false;
+			}
+		}
+		else{
+			cout << "esExpParentesis: else 2 --returns false--\n";
+
+			return false;
+		}
+	}
+	else{
+		cout << "esExpParentesis: else 1 --returns false--\n";
+
+		return false;
+	}
+}
+
+bool esExpresion(ifstream &fin, string &token){
+	cout << token << endl;
+
+	if (esFactor(fin, token)){
+		cout << "esExpresion: if 1\n";
+		
+		fin >> token;
+		cout << token << endl;
+
+		if (esOpBinario(fin, token)){
+			cout << "esExpresion: if 2\n";
+
+			fin >> token;
+			cout << token << endl;
+
+			if (esExpresion(fin, token)){
+				cout << "esExpresion: if 3 --returns true--\n";
+				
+				return true;
+			}
+			else{
+				cout << "esExpresion: else 3 --returns false--\n";
+
+				return false;
+			}
+		}
+		else{
+			cout << "esExpresion: else 2 --returns true--\n";
 
 			return true;
 		}
 	}
 	else{
+		cout << "esExpresion: else 1 --returns false--\n";
 
 		return false;
 	}
-
-	return false;
 }
 
 bool esFactor(ifstream &fin, string &token){
