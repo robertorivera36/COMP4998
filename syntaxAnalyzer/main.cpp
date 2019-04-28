@@ -190,6 +190,7 @@ bool esSecuenciaInst(ifstream &fin, string &token){
 		cout << "esSecuenciaInst: if 1\n";
 		cout << token << endl;
 
+		// para evitar pasar por la palabra reservada sin analizarla de ya tenerla en queue
 		if (token == "<palabraReservada:finmientras>"){
 			cout << "esSecuenciaInst: if NUEVO --returns true--\n";
 			return true;
@@ -373,6 +374,7 @@ bool esMientras(ifstream &fin, string &token){
 			if (esSecuenciaInst(fin, token)){ // originalmente esSecuenciaInst
 				cout << "esMientras: if 3\n";
 
+				// para evitar pasar por la palabra reservada sin analizarla de ya tenerla en queue
 				if (token == "<palabraReservada:finmientras>"){
 					cout << "esMientras: if 4 NUEVO --returns true--\n";
 
