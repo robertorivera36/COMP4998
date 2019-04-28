@@ -173,7 +173,7 @@ bool esSecuenciaInst(ifstream &fin, string &token){
 }
 
 bool esInstruccion(ifstream &fin, string &token){ // (Must test potential flaw) si el primero es falso el token ya se movio
-	if (esMientras(fin, token) || esEscribe(fin, token)){
+	if (esMientras(fin, token) || esEscribe(fin, token) || esAsignacion(fin, token)){
 
 		return true;
 	}
@@ -185,30 +185,46 @@ bool esInstruccion(ifstream &fin, string &token){ // (Must test potential flaw) 
 
 bool esAsignacion(ifstream &fin, string &token){
 	if (token == "<identificador>"){
+		cout << "esAsignacion: if 1\n";
 
 		fin >> token;
 
 		if (token == "<opAsignacion>"){
+			cout << "esAsignacion: if 2\n";
 
 			fin >> token;
 
 			if (esExpresion(fin, token)){
+				cout << "esAsignacion: if 3 --returns true--\n";
 
 				fin >> token;
 
-				if (token == "<puntoComa>"){
+				return true;
+
+				/* Commented out because asignacion should not end in ';', even if it does for some reason it never enters this if statement
+				/*if (token == "<puntoComa>"){
+					cout << "esAsignacion: if 4 --returns true--\n";
 
 					return true;
-				}
+				}*/
 			}
+			else{
+				cout << "esAsignacion: else 3 --returns false--\n";
+
+				return false;
+			}
+		}
+		else{
+			cout << "esAsignacion: else 2 --returns false--\n";
+
+			return false;
 		}
 	}
 	else{
+		cout << "esAsignacion: else 1 --returns false--\n";
 
 		return false;
 	}
-
-	return false;
 }
 
 bool esSi(ifstream &fin, string &token){

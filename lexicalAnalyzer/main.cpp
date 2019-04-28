@@ -206,17 +206,17 @@ int main() {
 
         else if (ch == '+') {
 
-            fout << '\"' << ch << '\"' << " : <opAritmetico>, SUM\n";
+            fout << '\"' << ch << '\"' << " : <opAritmetico> , SUM\n";
         }
 
         else if (ch == '-') {
 
-            fout << '\"' << ch << '\"' << " : <opAritmetico>, RES\n";
+            fout << '\"' << ch << '\"' << " : <opAritmetico> , RES\n";
         }
 
         else if (ch == '*') {
 
-            fout << '\"' << ch << '\"' << " : <opAritmetico>, MUL\n";
+            fout << '\"' << ch << '\"' << " : <opAritmetico> , MUL\n";
         }
 
         else if (ch == '/') {
@@ -228,7 +228,7 @@ int main() {
                 } while (ch != '*' && fin.peek() != '/');
                 fin.get();
             } else {
-                fout << '\"' << ch << '\"' << " : <opAritmetico>, DIV\n";
+                fout << '\"' << ch << '\"' << " : <opAritmetico> , DIV\n";
             }
         }
 

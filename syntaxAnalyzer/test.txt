@@ -9,4 +9,10 @@
 <identificador>
 <parentesisDerecho>
 <puntoComa>
+<identificador>
+<opAsignacion>
+<identificador>
+<opAritmetico>
+<numero>
+<puntoComa>
 <palabraReservada:finmientras>

@@ -22,7 +22,7 @@ LINE 5
 "var" : <identificador>
 "=" : <opAsignacion>
 "var" : <identificador>
-"-" : <opAritmetico>, RES
+"-" : <opAritmetico> , RES
 "01" : <numero>
 ";" : <puntoComa>
 LINE 6
