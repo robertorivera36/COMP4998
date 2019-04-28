@@ -1,3 +1,4 @@
+<palabraReservada:inicio>
 <palabraReservada:Mientras>
 <parentesisIzquierdo>
 <identificador>
@@ -14,5 +15,5 @@
 <identificador>
 <opAritmetico>
 <numero>
-<puntoComa>
 <palabraReservada:finmientras>
+<palabraReservada:final>

@@ -1,4 +1,4 @@
-// testing push of branch
+//
 //  main.cpp
 //  COMP4998
 //
@@ -20,6 +20,8 @@ void abrirArchivoEntrada(ifstream &fin, string archivo);
 
 // Devuelve cierto si el string es un token
 bool esToken(string token);
+
+bool esPrograma(ifstream &fin, string &token);
 
 bool esSecuenciaInst(ifstream &fin, string &token);
 bool esInstruccion(ifstream &fin, string &token);
@@ -79,13 +81,17 @@ int main(){
 	while (!fin.eof()){
 		fin >> token;
 
-		if (esMientras(fin, token)){
-			cout << "ENCONTRE UN MIENTRAS!!!\n\n";
+		if (esPrograma(fin, token)){
+			cout << "ENCONTRE UN PROGRAMA!!!\n\n";
 		}
 
-		if (esEscribe(fin, token)){
+		/*if (esMientras(fin, token)){
+			cout << "ENCONTRE UN MIENTRAS!!!\n\n";
+		}*/
+
+		/*if (esEscribe(fin, token)){
 			cout << "Encontre un escribe!!!\n\n";
-		}
+		}*/
 
 		/*if (esAsignacion(fin, token)){
 			cout << "Encontre una asignacion!!!\n";
@@ -140,9 +146,54 @@ bool esToken(string token){
 	return false;
 }
 
+bool esPrograma(ifstream &fin, string &token){
+	cout << token << endl;
+
+	if (token == "<palabraReservada:inicio>"){
+		cout << "esPrograma: if 1\n";
+
+		fin >> token;
+		cout << token << endl;
+
+		if (esSecuenciaInst(fin, token)){
+			cout << "esPrograma: if 2\n";
+
+			fin >> token;
+			cout << token << endl;
+
+			if (token == "<palabraReservada:final>"){
+				cout << "esPrograma: if 3 --returns true--\n";
+
+				return true;
+			}
+			else{
+				cout << "esPrograma: else 3 --returns false--\n";
+
+				return false;
+			}
+		}
+		else{
+			cout << "esPrograma: else 2 --returns false--\n";
+
+			return false;
+		}
+	}
+	else{
+		cout << "esPrograma: else 1 --returns false--\n";
+
+		return false;
+	}
+}
+
 bool esSecuenciaInst(ifstream &fin, string &token){
 	if (esInstruccion(fin, token)){
 		cout << "esSecuenciaInst: if 1\n";
+		cout << token << endl;
+
+		if (token == "<palabraReservada:finmientras>"){
+			cout << "esSecuenciaInst: if NUEVO --returns true--\n";
+			return true;
+		}
 
 		fin >> token;
 
@@ -156,17 +207,17 @@ bool esSecuenciaInst(ifstream &fin, string &token){
 
 			return true;
 		}
-		else if (token == "<palabraReservada:finmientras>"){ // Aqui poner palabras reservadas de terminacion de inst
+		else if (token == "<palabraReservada:finmientras>" || token == "<palabraReservada:finsi>" || token == "<palabraReservada:final>"){ // Aqui poner palabras reservadas de terminacion de inst
 			return true;
 		}
 		else{
-			cout << "esSecuenciaInst: if 2 --returns false--\n";
+			cout << "esSecuenciaInst: else 2 --returns false--\n";
 
 			return false;
 		}
 	}
 	else{
-		cout << "esSecuenciaInst: if 1 --returns false--\n";
+		cout << "esSecuenciaInst: else 1 --returns false--\n";
 
 		return false;
 	}
@@ -196,12 +247,11 @@ bool esAsignacion(ifstream &fin, string &token){
 
 			if (esExpresion(fin, token)){
 				cout << "esAsignacion: if 3 --returns true--\n";
-
-				fin >> token;
+				cout << token << endl << endl;
 
 				return true;
 
-				/* Commented out because asignacion should not end in ';', even if it does for some reason it never enters this if statement */
+				/* Commented out because asignacion should not end in ';' */
 				/*if (token == "<puntoComa>"){
 					cout << "esAsignacion: if 4 --returns true--\n";
 
@@ -322,6 +372,12 @@ bool esMientras(ifstream &fin, string &token){
 
 			if (esSecuenciaInst(fin, token)){ // originalmente esSecuenciaInst
 				cout << "esMientras: if 3\n";
+
+				if (token == "<palabraReservada:finmientras>"){
+					cout << "esMientras: if 4 NUEVO --returns true--\n";
+
+					return true;
+				}
 
 				fin >> token;
 				cout << token << endl;
