@@ -76,6 +76,7 @@ int main(){
 	fin.close();
 	fout.close();
 
+	// Al finalizar el programa utilizar "lista_tokens.txt"
 	abrirArchivoEntrada(fin, "test.txt");
 
 	while (!fin.eof()){
