@@ -6,7 +6,7 @@ LINE 2
 "00" : <numero>
 ";" : <puntoComa>
 LINE 3
-"Mientras" : <palabraReservada:Mientras>
+"Si" : <palabraReservada:Si>
 "(" : <parentesisIzquierdo>
 "var" : <identificador>
 ">" : <opRelacional> , MAY
@@ -19,13 +19,15 @@ LINE 4
 ")" : <parentesisDerecho>
 ";" : <puntoComa>
 LINE 5
+"sino" : <palabraReservada:sino>
+LINE 6
 "var" : <identificador>
 "=" : <opAsignacion>
 "var" : <identificador>
 "-" : <opAritmetico> , RES
 "01" : <numero>
 ";" : <puntoComa>
-LINE 6
-"finmientras" : <palabraReservada:finmientras>
 LINE 7
+"finsi" : <palabraReservada:finsi>
+LINE 8
 "final" : <palabraReservada:final>

@@ -3,7 +3,7 @@
 <opAsignacion>
 <numero>
 <puntoComa>
-<palabraReservada:Mientras>
+<palabraReservada:Si>
 <parentesisIzquierdo>
 <identificador>
 <opRelacional>
@@ -14,11 +14,12 @@
 <identificador>
 <parentesisDerecho>
 <puntoComa>
+<palabraReservada:sino>
 <identificador>
 <opAsignacion>
 <identificador>
 <opAritmetico>
 <numero>
 <puntoComa>
-<palabraReservada:finmientras>
+<palabraReservada:finsi>
 <palabraReservada:final>

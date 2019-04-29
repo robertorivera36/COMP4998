@@ -1,3 +1,8 @@
 inicio
-	multiplicacion = 423rer3 * subtotal * tax;
+	var = 00;
+	Si (var > 10)
+		Escribe (var);
+	sino
+		var = var - 01;
+	finsi
 final

@@ -1,7 +1,12 @@
-<palabraReservada:inicio>
+<palabraReservada:Si>
+<parentesisIzquierdo>
 <identificador>
-<opAsignacion>
-<identificador>
-<opAritmetico>
+<opRelacional>
 <numero>
-<palabraReservada:final>
+<parentesisDerecho>
+<palabraReservada:Escribe>
+<parentesisIzquierdo>
+<identificador>
+<parentesisDerecho>
+<puntoComa>
+<palabraReservada:finsi>

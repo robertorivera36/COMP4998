@@ -82,8 +82,12 @@ int main(){
 	while (!fin.eof()){
 		fin >> token;
 
-		if (esPrograma(fin, token)){
+		/*if (esPrograma(fin, token)){
 			cout << "ENCONTRE UN PROGRAMA!!!\n\n";
+		}*/
+
+		if (esSi(fin, token)){
+			cout << "ENCONTRE UN SI!!!\n\n";
 		}
 
 		/*if (esMientras(fin, token)){
@@ -280,39 +284,58 @@ bool esAsignacion(ifstream &fin, string &token){
 }
 
 bool esSi(ifstream &fin, string &token){
+	cout << token << endl;
+
 	if (token == "<palabraReservada:Si>"){
+		cout << "esSi: if 1\n";
 
 		fin >> token;
+		cout << token << endl;
 
 		if (esExpParentesis(fin, token)){
-			
+			cout << "esSi: if 2\n";
+
 			fin >> token;
+			cout << token << endl;
 
 			if (esSecuenciaInst(fin, token)){
+				cout << "esSi: if 3\n";
+
+				// para evitar pasar por la palabra reservada sin analizarla de ya tenerla en queue
+				if (token == "<palabraReservada:finsi>"){
+					cout << "esSi: if 4 NUEVO --returns true--\n";
+
+					return true;
+				} 
 
 				fin >> token;
+				cout << token << endl;
 
-				if (token == "<palabraReservada:sino>"){
-
-					fin >> token;
-
-					if (esSecuenciaInst(fin, token)){
-						
-						return true;
-					}
-				}
-				else if (token == "<palabraReservada:finsi>"){
+				if (token == "<palabraReservada:finsi>"){
+					cout << "esSi: if 4 --returns true--\n";
 
 					return true;
 				}
 				else{
+					cout << "esSi: else 4 --returns false--\n";
 
 					return false;
 				}
 			}
+			else{
+				cout << "esSi: else 3 --returns false--\n";
+
+				return false;
+			}
+		}
+		else{
+			cout << "esSi: else 2 --returns false--\n";
+
+			return false;
 		}
 	}
 	else{
+		cout << "esSi: else 1 --returns false--\n";
 
 		return false;
 	}
