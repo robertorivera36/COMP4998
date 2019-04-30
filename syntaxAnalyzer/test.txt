@@ -1,3 +1,4 @@
+<palabraReservada:inicio>
 <palabraReservada:Si>
 <parentesisIzquierdo>
 <identificador>
@@ -9,4 +10,12 @@
 <identificador>
 <parentesisDerecho>
 <puntoComa>
+<palabraReservada:sino>
+<identificador>
+<opAsignacion>
+<identificador>
+<opAritmetico>
+<numero>
+<puntoComa>
 <palabraReservada:finsi>
+<palabraReservada:final>

@@ -83,13 +83,13 @@ int main(){
 	while (!fin.eof()){
 		fin >> token;
 
-		/*if (esPrograma(fin, token)){
+		if (esPrograma(fin, token)){
 			cout << "ENCONTRE UN PROGRAMA!!!\n\n";
-		}*/
-
-		if (esSi(fin, token)){
-			cout << "ENCONTRE UN SI!!!\n\n";
 		}
+
+		/*if (esSi(fin, token)){
+			cout << "ENCONTRE UN SI!!!\n\n";
+		}*/
 
 		/*if (esMientras(fin, token)){
 			cout << "ENCONTRE UN MIENTRAS!!!\n\n";
@@ -363,6 +363,12 @@ bool esSino(ifstream &fin, string &token){
 
 		if (esSecuenciaInst(fin, token)){
 			cout << "esSino: if 2\n";
+
+			if (token == "<palabraReservada:finsi>"){
+				cout << "esSino: if 3 --returns true--\n";
+
+				return true;
+			}
 
 			fin >> token;
 			cout << token << endl;
