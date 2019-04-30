@@ -28,6 +28,7 @@ bool esInstruccion(ifstream &fin, string &token);
 
 bool esAsignacion(ifstream &fin, string &token);
 bool esSi(ifstream &fin, string &token);
+bool esSino(ifstream &fin, string &token);
 bool esEscribe(ifstream &fin, string &token);
 bool esMientras(ifstream &fin, string &token);
 
@@ -213,7 +214,7 @@ bool esSecuenciaInst(ifstream &fin, string &token){
 
 			return true;
 		}
-		else if (token == "<palabraReservada:finmientras>" || token == "<palabraReservada:finsi>" || token == "<palabraReservada:final>"){ // Aqui poner palabras reservadas de terminacion de inst
+		else if (token == "<palabraReservada:finmientras>" || token == "<palabraReservada:sino>" || token == "<palabraReservada:finsi>" || token == "<palabraReservada:final>"){ // Aqui poner palabras reservadas de terminacion de inst
 			return true;
 		}
 		else{
@@ -230,7 +231,7 @@ bool esSecuenciaInst(ifstream &fin, string &token){
 }
 
 bool esInstruccion(ifstream &fin, string &token){ // (Must test potential flaw) si el primero es falso el token ya se movio
-	if (esMientras(fin, token) || esEscribe(fin, token) || esAsignacion(fin, token)){
+	if (esMientras(fin, token) || esEscribe(fin, token) || esAsignacion(fin, token) || esSi(fin, token)){
 
 		return true;
 	}
@@ -306,13 +307,23 @@ bool esSi(ifstream &fin, string &token){
 					cout << "esSi: if 4 NUEVO --returns true--\n";
 
 					return true;
-				} 
+				}
+				else if (esSino(fin, token)){
+					cout << "esSi: else if 4 --returns true--\n";
+
+					return true;
+				}
 
 				fin >> token;
 				cout << token << endl;
-
+				
 				if (token == "<palabraReservada:finsi>"){
 					cout << "esSi: if 4 --returns true--\n";
+
+					return true;
+				}
+				else if (esSino(fin, token)){
+					cout << "esSi: else if 4 --returns true--\n";
 
 					return true;
 				}
@@ -336,6 +347,45 @@ bool esSi(ifstream &fin, string &token){
 	}
 	else{
 		cout << "esSi: else 1 --returns false--\n";
+
+		return false;
+	}
+}
+
+bool esSino(ifstream &fin, string &token){
+	cout << token << endl;
+
+	if (token == "<palabraReservada:sino>"){
+		cout << "esSino: if 1\n";
+
+		fin >> token;
+		cout << token << endl;
+
+		if (esSecuenciaInst(fin, token)){
+			cout << "esSino: if 2\n";
+
+			fin >> token;
+			cout << token << endl;
+
+			if (token == "<palabraReservada:finsi>"){
+				cout << "esSino: if 3 --returns true--\n";
+
+				return true;
+			}
+			else{
+				cout << "esSino: else 3 --returns false--\n";
+
+				return false;
+			}
+		}
+		else{
+			cout << "esSino: else 2 --returns false--\n";
+
+			return false;
+		}
+	}
+	else{
+		cout << "esSino: else 1 --returns false--\n";
 
 		return false;
 	}
