@@ -230,7 +230,7 @@ bool esSecuenciaInst(ifstream &fin, string &token){
 	}
 }
 
-bool esInstruccion(ifstream &fin, string &token){ // (Must test potential flaw) si el primero es falso el token ya se movio
+bool esInstruccion(ifstream &fin, string &token){
 	if (esMientras(fin, token) || esEscribe(fin, token) || esAsignacion(fin, token) || esSi(fin, token)){
 
 		return true;
