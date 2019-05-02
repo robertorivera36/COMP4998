@@ -56,6 +56,7 @@ int main(){
 
 		if (token == "LINE"){
 			lineCount++;
+			//fout << token << endl;
 			//cout << "LINE " << lineCount << "\n";
 			//fout << "LINE " << lineCount << "\n";
 		}
