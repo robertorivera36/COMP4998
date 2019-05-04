@@ -22,30 +22,8 @@ void abrirArchivoEntrada(ifstream &fin, string archivo);
 bool esToken(string token);
 
 // Verifica si token == "LINE", de ser asi almacena la linea actual a currentLine
-void setCurrentLine(ifstream &fin, string &token, int &currentLine){
-	// Using "LINE #" in lista_tokens.txt and curentLine was string
-	/*if (token == "LINE"){
-
-		currentLine = token;
-		
-		fin >> token;
-		currentLine += " " + token;
-
-		fin >> token;
-	}*/
-
-	if (token == "LINE"){
-		currentLine++;
-		fin >> token;
-	}
-}
-
-void getCurrentLine(int &currentLine){
-
-	//cout << currentLine;
-
-	cout << "LINE " << currentLine;
-}
+void setCurrentLine(ifstream &fin, string &token, int &currentLine);
+void getCurrentLine(int &currentLine);
 
 bool esPrograma(ifstream &fin, string &token, int &currentLine);
 
@@ -80,9 +58,9 @@ int main(){
 		fin >> token;
 
 		if (token == "LINE"){
-			//fin >> next;
+			/*fin >> next;
+			fout << token << " " << next << endl;*/
 
-			//fout << token << " " << next << endl;
 			fout << token << endl;
 		}
 
@@ -115,38 +93,6 @@ int main(){
 		else{
 			break;
 		}
-
-		/*if (esSi(fin, token)){
-			cout << "ENCONTRE UN SI!!!\n\n";
-		}*/
-
-		/*if (esMientras(fin, token)){
-			cout << "ENCONTRE UN MIENTRAS!!!\n\n";
-		}*/
-
-		/*if (esEscribe(fin, token)){
-			cout << "Encontre un escribe!!!\n\n";
-		}*/
-
-		/*if (esAsignacion(fin, token)){
-			cout << "Encontre una asignacion!!!\n";
-		}*/
-
-		/*if (esInstruccion(fin, token)){
-			cout << "Encontre una instruccion!!!\n";
-		}*/
-
-		/*if (esExpresion(fin, token)){
-			cout << "Encontre una expresion!!!\n";
-		}
-
-		if (esOpBinario(fin, token)){
-			cout << "Encontre un OpBinario!!!\n";
-		}
-
-		if (esExpParentesis(fin, token)){
-			cout << "Encontre una expParentesis!!!\n";
-		}*/
 	}
 
 	return 0;
@@ -179,6 +125,32 @@ bool esToken(string token){
 		}
 	}
 	return false;
+}
+
+void setCurrentLine(ifstream &fin, string &token, int &currentLine){
+	
+	// When using "LINE #" in lista_tokens.txt and when curentLine was string
+	/*if (token == "LINE"){
+
+		currentLine = token;
+		
+		fin >> token;
+		currentLine += " " + token;
+
+		fin >> token;
+	}*/
+
+	if (token == "LINE"){
+		currentLine++;
+		fin >> token;
+	}
+}
+
+void getCurrentLine(int &currentLine){
+
+	//cout << currentLine;
+
+	cout << "LINE " << currentLine;
 }
 
 bool esPrograma(ifstream &fin, string &token, int &currentLine){
