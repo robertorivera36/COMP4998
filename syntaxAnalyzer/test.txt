@@ -1,10 +1,33 @@
-LINE 1
+LINE
 <palabraReservada:inicio>
-LINE 2
+LINE
+<identificador>
+<opAsignacion>
+<numero>
+<puntoComa>
+LINE
+<palabraReservada:Si>
+<parentesisIzquierdo>
+<identificador>
+<opRelacional>
+<numero>
+<parentesisDerecho>
+LINE
 <palabraReservada:Escribe>
 <parentesisIzquierdo>
 <identificador>
 <parentesisDerecho>
 <puntoComa>
-LINE 3
+LINE
+<palabraReservada:sino>
+LINE
+<identificador>
+<opAsignacion>
+<identificador>
+<opAritmetico>
+<numero>
+<puntoComa>
+LINE
+<palabraReservada:finsi>
+LINE
 <palabraReservada:final>

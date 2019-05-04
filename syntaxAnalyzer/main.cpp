@@ -70,7 +70,7 @@ int main(){
 	ofstream fout;
 
 	string token, next;
-	int currentLine;
+	int currentLine = 0;
 
 	abrirArchivoEntrada(fin, "lex_output.txt");
 	fout.open("lista_tokens.txt");
@@ -201,22 +201,27 @@ bool esPrograma(ifstream &fin, string &token, int &currentLine){
 			}
 			else{
 
-				cout << "[Error] in <programa>: <palabraReservada:final> not found\n";
+				cout << "[Error] in ";
+				getCurrentLine(currentLine);
+				cout << " <programa>: <palabraReservada:final> not found\n";
 
 				return false;
 			}
 		}
 		else{
 
-			cout << "[Error] in <programa>: <secuenciaInst> not found\n";
+			cout << "[Error] in ";
+			getCurrentLine(currentLine);
+			cout << " <programa>: <secuenciaInst> not found\n";
 
 			return false;
 		}
 	}
 	else{
 
-		cout << "[Error] in <programa>: <palabraReservada:inicio> not found\n";
+		cout << "[Error] in ";
 		getCurrentLine(currentLine);
+		cout << " <programa>: <palabraReservada:inicio> not found\n";
 
 		return false;
 	}
@@ -247,7 +252,9 @@ bool esSecuenciaInst(ifstream &fin, string &token, int &currentLine){
 		}
 		else{
 
-			cout << "[Error] in <secuenciaInst>: <instruccion> or <secuenciaInst> not found\n";
+			cout << "[Error] in ";
+			getCurrentLine(currentLine);
+			cout << " <secuenciaInst>: <instruccion> or <secuenciaInst> not found\n";
 
 			return false;
 		}
@@ -293,7 +300,9 @@ bool esAsignacion(ifstream &fin, string &token, int &currentLine){
 			}
 			else{
 
-				cout << "[Error] in <asignacion>: <esExpresion> not found\n";
+				cout << "[Error] in ";
+				getCurrentLine(currentLine);
+				cout << " <asignacion>: <esExpresion> not found\n";
 
 				return false;
 			}
@@ -346,21 +355,27 @@ bool esSi(ifstream &fin, string &token, int &currentLine){
 				}
 				else{
 
-					cout << "[Error]: <palabraReservada:finsi> not found\n";
+					cout << "[Error] in ";
+					getCurrentLine(currentLine);
+					cout << ": <palabraReservada:finsi> not found\n";
 
 					return false;
 				}
 			}
 			else{
 
-				cout << "[Error]: <secuenciaInst> not found\n";
+				cout << "[Error] in ";
+				getCurrentLine(currentLine);
+				cout << ": <secuenciaInst> not found\n";
 
 				return false;
 			}
 		}
 		else{
 
-			cout << "[Error]: <expParentesis> not found\n";
+			cout << "[Error] in ";
+			getCurrentLine(currentLine);
+			cout << ": <expParentesis> not found\n";
 
 			return false;
 		}
@@ -394,14 +409,18 @@ bool esSino(ifstream &fin, string &token, int &currentLine){
 			}
 			else{
 
-				cout << "[Error]: <palabraReservada:finsi> not found\n";
+				cout << "[Error] in ";
+				getCurrentLine(currentLine);
+				cout << ": <palabraReservada:finsi> not found\n";
 
 				return false;
 			}
 		}
 		else{
 
-			cout << "[Error]: <secuenciaInst> not found\n";
+			cout << "[Error] in ";
+			getCurrentLine(currentLine);
+			cout << ": <secuenciaInst> not found\n";
 
 			return false;
 		}
@@ -430,15 +449,18 @@ bool esEscribe(ifstream &fin, string &token, int &currentLine){
 			}
 			else{
 
-				cout << "[Error]: <puntoComa> not found\n";
+				cout << "[Error] in ";
+				getCurrentLine(currentLine);
+				cout << ": <puntoComa> not found\n";
 
 				return false;
 			}
 		}
 		else{
 
-			cout << "[Error]: <expParentesis> not found\n";
+			cout << "[Error] in ";
 			getCurrentLine(currentLine);
+			cout << ": <expParentesis> not found\n";
 
 			return false;
 		}
@@ -478,21 +500,27 @@ bool esMientras(ifstream &fin, string &token, int &currentLine){
 				}
 				else{
 
-					cout << "[Error]: <palabraReservada:finmientras> not found\n";
+					cout << "[Error] in ";
+					getCurrentLine(currentLine);
+					cout << ": <palabraReservada:finmientras> not found\n";
 
 					return false;
 				}
 			}
 			else{
 
-				cout << "[Error]: <secuenciaInst> not found\n";
+				cout << "[Error] in ";
+				getCurrentLine(currentLine);
+				cout << ": <secuenciaInst> not found\n";
 
 				return false;
 			}
 		}
 		else{
 			
-			cout << "[Error]: <expParentesis> not found\n";
+			cout << "[Error] in ";
+			getCurrentLine(currentLine);
+			cout << ": <expParentesis> not found\n";
 
 			return false;
 		}
@@ -521,21 +549,27 @@ bool esExpParentesis(ifstream &fin, string &token, int &currentLine){
 			}
 			else{
 
-				cout << "[Error]: <parentesisDerecho> not found\n";
+				cout << "[Error] in ";
+				getCurrentLine(currentLine);
+				cout << ": <parentesisDerecho> not found\n";
 
 				return false;
 			}
 		}
 		else{
 
-			cout << "[Error] in: <expresion>\n";
+			cout << "[Error] in ";
+			getCurrentLine(currentLine);
+			cout << ": <expresion>\n";
 
 			return false;
 		}
 	}
 	else{
 
-		cout << "[Error]: <parentesisIzquierdo> not found\n";
+		cout << "[Error] in ";
+		getCurrentLine(currentLine);
+		cout << ": <parentesisIzquierdo> not found\n";
 
 		return false;
 	}
@@ -559,7 +593,9 @@ bool esExpresion(ifstream &fin, string &token, int &currentLine){
 			}
 			else{
 
-				cout << "[Error]: <expresion> not found\n";
+				cout << "[Error] in ";
+				getCurrentLine(currentLine);
+				cout << ": <expresion> not found\n";
 
 				return false;
 			}
@@ -571,7 +607,9 @@ bool esExpresion(ifstream &fin, string &token, int &currentLine){
 	}
 	else{
 
-		cout << "[Error]: <factor> not found\n";
+		cout << "[Error] in ";
+		getCurrentLine(currentLine);
+		cout << ": <factor> not found\n";
 
 		return false;
 	}
