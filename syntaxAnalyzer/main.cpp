@@ -21,31 +21,56 @@ void abrirArchivoEntrada(ifstream &fin, string archivo);
 // Devuelve cierto si el string es un token
 bool esToken(string token);
 
-bool esPrograma(ifstream &fin, string &token);
+// Verifica si token == "LINE", de ser asi almacena la linea actual a currentLine
+void setCurrentLine(ifstream &fin, string &token, int &currentLine){
+	// Using "LINE #" in lista_tokens.txt and curentLine was string
+	/*if (token == "LINE"){
 
-bool esSecuenciaInst(ifstream &fin, string &token);
-bool esInstruccion(ifstream &fin, string &token);
+		currentLine = token;
+		
+		fin >> token;
+		currentLine += " " + token;
 
-bool esAsignacion(ifstream &fin, string &token);
-bool esSi(ifstream &fin, string &token);
-bool esSino(ifstream &fin, string &token);
-bool esEscribe(ifstream &fin, string &token);
-bool esMientras(ifstream &fin, string &token);
+		fin >> token;
+	}*/
 
-bool esExpParentesis(ifstream &fin, string &token);
-bool esExpresion(ifstream &fin, string &token);
-bool esFactor (ifstream &fin, string &token);
+	if (token == "LINE"){
+		currentLine++;
+		fin >> token;
+	}
+}
 
-bool esOpBinario(ifstream &fin, string &token);
+void getCurrentLine(int &currentLine){
+
+	//cout << currentLine;
+
+	cout << "LINE " << currentLine;
+}
+
+bool esPrograma(ifstream &fin, string &token, int &currentLine);
+
+bool esSecuenciaInst(ifstream &fin, string &token, int &currentLine);
+bool esInstruccion(ifstream &fin, string &token, int &currentLine);
+
+bool esAsignacion(ifstream &fin, string &token, int &currentLine);
+bool esSi(ifstream &fin, string &token, int &currentLine);
+bool esSino(ifstream &fin, string &token, int &currentLine);
+bool esEscribe(ifstream &fin, string &token, int &currentLine);
+bool esMientras(ifstream &fin, string &token, int &currentLine);
+
+bool esExpParentesis(ifstream &fin, string &token, int &currentLine);
+bool esExpresion(ifstream &fin, string &token, int &currentLine);
+bool esFactor (ifstream &fin, string &token, int &currentLine);
+
+bool esOpBinario(ifstream &fin, string &token, int &currentLine);
 
 int main(){
 
 	ifstream fin;
 	ofstream fout;
 
-	int lineCount;
-
-	string token;
+	string token, next;
+	int currentLine;
 
 	abrirArchivoEntrada(fin, "lex_output.txt");
 	fout.open("lista_tokens.txt");
@@ -55,13 +80,12 @@ int main(){
 		fin >> token;
 
 		if (token == "LINE"){
-			lineCount++;
-			//fout << token << endl;
-			//cout << "LINE " << lineCount << "\n";
-			//fout << "LINE " << lineCount << "\n";
+			//fin >> next;
+
+			//fout << token << " " << next << endl;
+			fout << token << endl;
 		}
 
-		// Si utilizar lista_tokens.txt no funciona, hacer todo dentro de este else if
 		else if (esToken(token)){
 			// Para evitar que al final haya una linea vacia que causa que el ultimo token este duplicado
 			if (token == "<palabraReservada:final>"){
@@ -83,8 +107,9 @@ int main(){
 
 	while (!fin.eof()){
 		fin >> token;
+		setCurrentLine(fin, token, currentLine);
 
-		if (esPrograma(fin, token)){
+		if (esPrograma(fin, token, currentLine)){
 			continue;
 		}
 		else{
@@ -156,15 +181,17 @@ bool esToken(string token){
 	return false;
 }
 
-bool esPrograma(ifstream &fin, string &token){
+bool esPrograma(ifstream &fin, string &token, int &currentLine){
 
 	if (token == "<palabraReservada:inicio>"){
 
 		fin >> token;
+		setCurrentLine(fin, token, currentLine);
 
-		if (esSecuenciaInst(fin, token)){
+		if (esSecuenciaInst(fin, token, currentLine)){
 
 			fin >> token;
+			setCurrentLine(fin, token, currentLine);
 
 			if (token == "<palabraReservada:final>"){
 
@@ -189,13 +216,14 @@ bool esPrograma(ifstream &fin, string &token){
 	else{
 
 		cout << "[Error] in <programa>: <palabraReservada:inicio> not found\n";
+		getCurrentLine(currentLine);
 
 		return false;
 	}
 }
 
-bool esSecuenciaInst(ifstream &fin, string &token){
-	if (esInstruccion(fin, token)){
+bool esSecuenciaInst(ifstream &fin, string &token, int &currentLine){
+	if (esInstruccion(fin, token, currentLine)){
 
 		// para evitar pasar por la palabra reservada sin analizarla de ya tenerla en queue
 		if (token == "<palabraReservada:finmientras>"){
@@ -203,12 +231,13 @@ bool esSecuenciaInst(ifstream &fin, string &token){
 		}
 
 		fin >> token;
+		setCurrentLine(fin, token, currentLine);
 
-		if (esSecuenciaInst(fin, token)){
+		if (esSecuenciaInst(fin, token, currentLine)){
 
 			return true;
 		}
-		else if (esInstruccion(fin, token)){
+		else if (esInstruccion(fin, token, currentLine)){
 
 			return true;
 		}
@@ -229,8 +258,8 @@ bool esSecuenciaInst(ifstream &fin, string &token){
 	}
 }
 
-bool esInstruccion(ifstream &fin, string &token){
-	if (esMientras(fin, token) || esEscribe(fin, token) || esAsignacion(fin, token) || esSi(fin, token)){
+bool esInstruccion(ifstream &fin, string &token, int &currentLine){
+	if (esMientras(fin, token, currentLine) || esEscribe(fin, token, currentLine) || esAsignacion(fin, token, currentLine) || esSi(fin, token, currentLine)){
 
 		return true;
 	}
@@ -240,16 +269,18 @@ bool esInstruccion(ifstream &fin, string &token){
 	}
 }
 
-bool esAsignacion(ifstream &fin, string &token){
+bool esAsignacion(ifstream &fin, string &token, int &currentLine){
 	if (token == "<identificador>"){
 
 		fin >> token;
+		setCurrentLine(fin, token, currentLine);
 
 		if (token == "<opAsignacion>"){
 
 			fin >> token;
+			setCurrentLine(fin, token, currentLine);
 
-			if (esExpresion(fin, token)){
+			if (esExpresion(fin, token, currentLine)){
 
 				return true;
 
@@ -278,35 +309,38 @@ bool esAsignacion(ifstream &fin, string &token){
 	}
 }
 
-bool esSi(ifstream &fin, string &token){
+bool esSi(ifstream &fin, string &token, int &currentLine){
 
 	if (token == "<palabraReservada:Si>"){
 
 		fin >> token;
+		setCurrentLine(fin, token, currentLine);
 
-		if (esExpParentesis(fin, token)){
+		if (esExpParentesis(fin, token, currentLine)){
 
 			fin >> token;
+			setCurrentLine(fin, token, currentLine);
 
-			if (esSecuenciaInst(fin, token)){
+			if (esSecuenciaInst(fin, token, currentLine)){
 
 				// para evitar pasar por la palabra reservada sin analizarla de ya tenerla en queue
 				if (token == "<palabraReservada:finsi>"){
 
 					return true;
 				}
-				else if (esSino(fin, token)){
+				else if (esSino(fin, token, currentLine)){
 
 					return true;
 				}
 
 				fin >> token;
+				setCurrentLine(fin, token, currentLine);
 				
 				if (token == "<palabraReservada:finsi>"){
 
 					return true;
 				}
-				else if (esSino(fin, token)){
+				else if (esSino(fin, token, currentLine)){
 
 					return true;
 				}
@@ -337,13 +371,14 @@ bool esSi(ifstream &fin, string &token){
 	}
 }
 
-bool esSino(ifstream &fin, string &token){
+bool esSino(ifstream &fin, string &token, int &currentLine){
 
 	if (token == "<palabraReservada:sino>"){
 
 		fin >> token;
+		setCurrentLine(fin, token, currentLine);
 
-		if (esSecuenciaInst(fin, token)){
+		if (esSecuenciaInst(fin, token, currentLine)){
 
 			if (token == "<palabraReservada:finsi>"){
 
@@ -351,6 +386,7 @@ bool esSino(ifstream &fin, string &token){
 			}
 
 			fin >> token;
+			setCurrentLine(fin, token, currentLine);
 
 			if (token == "<palabraReservada:finsi>"){
 
@@ -376,15 +412,17 @@ bool esSino(ifstream &fin, string &token){
 	}
 }
 
-bool esEscribe(ifstream &fin, string &token){
+bool esEscribe(ifstream &fin, string &token, int &currentLine){
 
 	if (token == "<palabraReservada:Escribe>"){
 
 		fin >> token;
+		setCurrentLine(fin, token, currentLine);
 
-		if (esExpParentesis(fin, token)){
+		if (esExpParentesis(fin, token, currentLine)){
 
 			fin >> token;
+			setCurrentLine(fin, token, currentLine);
 
 			if (token == "<puntoComa>"){
 
@@ -400,6 +438,7 @@ bool esEscribe(ifstream &fin, string &token){
 		else{
 
 			cout << "[Error]: <expParentesis> not found\n";
+			getCurrentLine(currentLine);
 
 			return false;
 		}
@@ -410,17 +449,19 @@ bool esEscribe(ifstream &fin, string &token){
 	}
 }
 
-bool esMientras(ifstream &fin, string &token){
+bool esMientras(ifstream &fin, string &token, int &currentLine){
 
 	if (token == "<palabraReservada:Mientras>"){
 
 		fin >> token;
+		setCurrentLine(fin, token, currentLine);
 
-		if (esExpParentesis(fin, token)){
+		if (esExpParentesis(fin, token, currentLine)){
 
 			fin >> token;
+			setCurrentLine(fin, token, currentLine);
 
-			if (esSecuenciaInst(fin, token)){ // originalmente esSecuenciaInst
+			if (esSecuenciaInst(fin, token, currentLine)){ // originalmente esSecuenciaInst
 
 				// para evitar pasar por la palabra reservada sin analizarla de ya tenerla en queue
 				if (token == "<palabraReservada:finmientras>"){
@@ -429,6 +470,7 @@ bool esMientras(ifstream &fin, string &token){
 				}
 
 				fin >> token;
+				setCurrentLine(fin, token, currentLine);
 
 				if (token == "<palabraReservada:finmientras>"){
 
@@ -461,13 +503,14 @@ bool esMientras(ifstream &fin, string &token){
 	}
 }
 
-bool esExpParentesis(ifstream &fin, string &token){
+bool esExpParentesis(ifstream &fin, string &token, int &currentLine){
 
 	if (token == "<parentesisIzquierdo>"){
 
 		fin >> token;
+		setCurrentLine(fin, token, currentLine);
 
-		if (esExpresion(fin, token)){
+		if (esExpresion(fin, token, currentLine)){
 
 			// aqui ya estoy en parentesisDerecho al coger el prox lo brincamos
 			//fin >> token;
@@ -498,17 +541,19 @@ bool esExpParentesis(ifstream &fin, string &token){
 	}
 }
 
-bool esExpresion(ifstream &fin, string &token){
+bool esExpresion(ifstream &fin, string &token, int &currentLine){
 
-	if (esFactor(fin, token)){
+	if (esFactor(fin, token, currentLine)){
 		
 		fin >> token;
+		setCurrentLine(fin, token, currentLine);
 
-		if (esOpBinario(fin, token)){
+		if (esOpBinario(fin, token, currentLine)){
 
 			fin >> token;
+			setCurrentLine(fin, token, currentLine);
 
-			if (esExpresion(fin, token)){
+			if (esExpresion(fin, token, currentLine)){
 				
 				return true;
 			}
@@ -532,9 +577,9 @@ bool esExpresion(ifstream &fin, string &token){
 	}
 }
 
-bool esFactor(ifstream &fin, string &token){
+bool esFactor(ifstream &fin, string &token, int &currentLine){
 	
-	if (token == "<numero>" || token == "<identificador>" || esExpParentesis(fin, token)){
+	if (token == "<numero>" || token == "<identificador>" || esExpParentesis(fin, token, currentLine)){
 
 		return true;
 	}
@@ -546,7 +591,7 @@ bool esFactor(ifstream &fin, string &token){
 	}
 }
 
-bool esOpBinario(ifstream &fin, string &token){
+bool esOpBinario(ifstream &fin, string &token, int &currentLine){
 	
 	if (token == "<opAritmetico>" || token == "<opRelacional>"){
 

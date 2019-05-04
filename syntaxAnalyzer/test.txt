@@ -1,7 +1,10 @@
+LINE 1
 <palabraReservada:inicio>
+LINE 2
 <palabraReservada:Escribe>
 <parentesisIzquierdo>
 <identificador>
 <parentesisDerecho>
 <puntoComa>
+LINE 3
 <palabraReservada:final>
