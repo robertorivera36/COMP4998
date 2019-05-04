@@ -85,7 +85,10 @@ int main(){
 		fin >> token;
 
 		if (esPrograma(fin, token)){
-			cout << "ENCONTRE UN PROGRAMA!!!\n\n";
+			continue;
+		}
+		else{
+			break;
 		}
 
 		/*if (esSi(fin, token)){
@@ -165,19 +168,27 @@ bool esPrograma(ifstream &fin, string &token){
 
 			if (token == "<palabraReservada:final>"){
 
+				cout << "compiled successfully\n";
+
 				return true;
 			}
 			else{
+
+				cout << "[Error] in <programa>: <palabraReservada:final> not found\n";
 
 				return false;
 			}
 		}
 		else{
 
+			cout << "[Error] in <programa>: <secuenciaInst> not found\n";
+
 			return false;
 		}
 	}
 	else{
+
+		cout << "[Error] in <programa>: <palabraReservada:inicio> not found\n";
 
 		return false;
 	}
@@ -206,6 +217,8 @@ bool esSecuenciaInst(ifstream &fin, string &token){
 			return true;
 		}
 		else{
+
+			cout << "[Error] in <secuenciaInst>: <instruccion> or <secuenciaInst> not found\n";
 
 			return false;
 		}
@@ -248,6 +261,8 @@ bool esAsignacion(ifstream &fin, string &token){
 				}*/
 			}
 			else{
+
+				cout << "[Error] in <asignacion>: <esExpresion> not found\n";
 
 				return false;
 			}
@@ -297,15 +312,21 @@ bool esSi(ifstream &fin, string &token){
 				}
 				else{
 
+					cout << "[Error]: <palabraReservada:finsi> not found\n";
+
 					return false;
 				}
 			}
 			else{
 
+				cout << "[Error]: <secuenciaInst> not found\n";
+
 				return false;
 			}
 		}
 		else{
+
+			cout << "[Error]: <expParentesis> not found\n";
 
 			return false;
 		}
@@ -337,10 +358,14 @@ bool esSino(ifstream &fin, string &token){
 			}
 			else{
 
+				cout << "[Error]: <palabraReservada:finsi> not found\n";
+
 				return false;
 			}
 		}
 		else{
+
+			cout << "[Error]: <secuenciaInst> not found\n";
 
 			return false;
 		}
@@ -367,10 +392,14 @@ bool esEscribe(ifstream &fin, string &token){
 			}
 			else{
 
+				cout << "[Error]: <puntoComa> not found\n";
+
 				return false;
 			}
 		}
 		else{
+
+			cout << "[Error]: <expParentesis> not found\n";
 
 			return false;
 		}
@@ -407,16 +436,21 @@ bool esMientras(ifstream &fin, string &token){
 				}
 				else{
 
+					cout << "[Error]: <palabraReservada:finmientras> not found\n";
+
 					return false;
 				}
 			}
 			else{
 
+				cout << "[Error]: <secuenciaInst> not found\n";
+
 				return false;
 			}
 		}
 		else{
-			cout << "esMientras: else 2 --returns false--\n";
+			
+			cout << "[Error]: <expParentesis> not found\n";
 
 			return false;
 		}
@@ -444,15 +478,21 @@ bool esExpParentesis(ifstream &fin, string &token){
 			}
 			else{
 
+				cout << "[Error]: <parentesisDerecho> not found\n";
+
 				return false;
 			}
 		}
 		else{
 
+			cout << "[Error] in: <expresion>\n";
+
 			return false;
 		}
 	}
 	else{
+
+		cout << "[Error]: <parentesisIzquierdo> not found\n";
 
 		return false;
 	}
@@ -474,6 +514,8 @@ bool esExpresion(ifstream &fin, string &token){
 			}
 			else{
 
+				cout << "[Error]: <expresion> not found\n";
+
 				return false;
 			}
 		}
@@ -484,27 +526,35 @@ bool esExpresion(ifstream &fin, string &token){
 	}
 	else{
 
+		cout << "[Error]: <factor> not found\n";
+
 		return false;
 	}
 }
 
 bool esFactor(ifstream &fin, string &token){
+	
 	if (token == "<numero>" || token == "<identificador>" || esExpParentesis(fin, token)){
 
 		return true;
 	}
 	else{
 
+		//cout << "[Error] in \"" << token << "\": " << "is not a <factor>\n";
+
 		return false;
 	}
 }
 
 bool esOpBinario(ifstream &fin, string &token){
+	
 	if (token == "<opAritmetico>" || token == "<opRelacional>"){
 
 		return true;
 	}
 	else{
+
+		//cout << "[Error] in \"" << token << "\": " << "is not a <opBinario>\n";
 
 		return false;
 	}
