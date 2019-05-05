@@ -1,33 +1,13 @@
 LINE 1
 "inicio" : <palabraReservada:inicio>
 LINE 2
-"var" : <identificador>
+[Error] Line 2: "multipliCacion" [words cannot have capitalized letters in them]
 "=" : <opAsignacion>
-"00" : <numero>
+"42" : <numero>
+"*" : <opAritmetico> , MUL
+"subtotal" : <identificador>
+"*" : <opAritmetico> , MUL
+"tax" : <identificador>
 ";" : <puntoComa>
 LINE 3
-"Si" : <palabraReservada:Si>
-"(" : <parentesisIzquierdo>
-"var" : <identificador>
-">" : <opRelacional> , MAY
-"10" : <numero>
-")" : <parentesisDerecho>
-LINE 4
-"Escribe" : <palabraReservada:Escribe>
-"(" : <parentesisIzquierdo>
-"var" : <identificador>
-")" : <parentesisDerecho>
-";" : <puntoComa>
-LINE 5
-"sino" : <palabraReservada:sino>
-LINE 6
-"var" : <identificador>
-"=" : <opAsignacion>
-"var" : <identificador>
-"-" : <opAritmetico> , RES
-"01" : <numero>
-";" : <puntoComa>
-LINE 7
-"finsi" : <palabraReservada:finsi>
-LINE 8
 "final" : <palabraReservada:final>

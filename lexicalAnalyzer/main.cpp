@@ -94,7 +94,7 @@ int main() {
         }
     }
 
-    fout.open("output.txt");
+    fout.open("output.txt", ios::out);
 
     fout << "LINE " << lineCount++ << "\n";
 
@@ -244,20 +244,47 @@ int main() {
 
         else if (ch == ';') {
 
-            fout << '\"' << ch << '\"' << " : <puntoComa>\n";
+          fout << '\"' << ch << '\"' << " : <puntoComa>\n";
         }
 
         else if (ch == '\n' && !(fin.peek() == '\xFF')) {
 
-            fout << "LINE " << lineCount++ << "\n";
+          fout << "LINE " << lineCount++ << "\n";
+        }
+
+        else if (ch == '\n' && fin.peek() == '\xFF') {
+          fout << "ENDOFFILE";
         }
 
         else if (ch != '+' && ch != '-' && ch != '*' && ch != '/' && ch != '(' && ch != ')' && ch != '=' && ch != ';' && ch != '\t' && ch != ' ' && ch != '\n') {
-            
-            fout << "[Error]  Line " << lineCount - 1 << ": " << ch << " [not defined]\n";
+
+          fout << "[Error]  Line " << lineCount - 1 << ": " << ch << " [not defined]\n";
         }
     }
     fin.close();
     fout.close();
+
+    ifstream format_output;
+    ofstream lex_output;
+
+    format_output.open("output.txt");
+    lex_output.open("../syntaxAnalyzer/lex_output.txt");
+
+    while (!format_output.eof()) {
+      string line;
+      std::getline(format_output, line, '\n');
+
+      if (line == "ENDOFFILE") {
+        continue;
+      } else if (line == "\"final\" : <palabraReservada:final>") {
+        lex_output << line;
+      } else {
+        lex_output << line << '\n';
+      }
+    }
+
+    format_output.close();
+    lex_output.close();
+
     return 0;
 }
