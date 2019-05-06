@@ -1,8 +1,8 @@
 inicio
-	var = 00;
+	var = 00
 	Si (var > 10)
 		Escribe (var);
 	sino
-		var = var - 01;
+		var = var - 01
 	finsi
 final

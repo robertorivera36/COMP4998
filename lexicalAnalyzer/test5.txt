@@ -1,5 +1,5 @@
 inicio
-	bono = 5;
-	balance = 4096:
-	Escribe (bono * balance);
+	Mientras(var < 05)
+		var = var + 01
+	finmientas
 final
