@@ -128,7 +128,7 @@ int main() {
                 fout << '\"' << lexema << '\"' << " : <palabraReservada:" << lexema << ">\n";
             }
             else if (error) {
-                fout << "[Error] Line " << lineCount - 1 << ": " << '\"' << lexema << '\"' << " [words cannot have capitalized letters in them]\n";
+                fout << " [Error] Line " << lineCount - 1 << ": " << '\"' << lexema << '\"' << " [words cannot have capitalized letters in them]\n";
             }
             else{
                 fout << '\"' << lexema << '\"' << " : <identificador>\n";
@@ -158,7 +158,7 @@ int main() {
             j = 0;
 
             if (error) {
-                fout << "[Error] Line " << lineCount - 1 << ": " << '\"' << lexema << '\"' << " [verifity integer]\n";
+                fout << " [Error] Line " << lineCount - 1 << ": " << '\"' << lexema << '\"' << " [verifity integer]\n";
             }
             else{
                 fout << '\"' << lexema << '\"' << " : <numero>\n";
@@ -167,7 +167,7 @@ int main() {
 
         if (isdigit(ch) && !isdigit(fin.peek())) {
 
-          fout << "[Error] Line " << lineCount - 1 << ": " << '\"' << ch << '\"' << " [single-digit numbers must have leading zero]\n";
+          fout << " [Error] Line " << lineCount - 1 << ": " << '\"' << ch << '\"' << " [single-digit numbers must have leading zero]\n";
         }
 
         else if (ch == '='){
@@ -258,7 +258,7 @@ int main() {
 
         else if (ch != '+' && ch != '-' && ch != '*' && ch != '/' && ch != '(' && ch != ')' && ch != '=' && ch != ';' && ch != '\t' && ch != ' ' && ch != '\n') {
 
-          fout << "[Error]  Line " << lineCount - 1 << ": " << ch << " [not defined]\n";
+          fout << " [Error]  Line " << lineCount - 1 << ": " << ch << " [not defined]\n";
         }
     }
     fin.close();

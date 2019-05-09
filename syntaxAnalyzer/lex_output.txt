@@ -1,23 +1,12 @@
 LINE 1
 "inicio" : <palabraReservada:inicio>
 LINE 2
-"Mientras" : <palabraReservada:Mientras>
-"(" : <parentesisIzquierdo>
-"var" : <identificador>
-"<" : <opRelacional> , MEN
-"10" : <numero>
-")" : <parentesisDerecho>
-LINE 3
-"Escribe" : <palabraReservada:Escribe>
-"(" : <parentesisIzquierdo>
-"var" : <identificador>
-")" : <parentesisDerecho>
-";" : <puntoComa>
-LINE 4
-"var" : <identificador>
+"multiplicacion" : <identificador>
 "=" : <opAsignacion>
-"var" : <identificador>
-"+" : <opAritmetico> , SUM
-"01" : <numero>
-LINE 5
-"finmientras" : <palabraReservada:finmientras>
+"42" : <numero>
+"*" : <opAritmetico> , MUL
+"subtotal" : <identificador>
+"*" : <opAritmetico> , MUL
+"tax" : <identificador>
+LINE 3
+"final" : <palabraReservada:final>
