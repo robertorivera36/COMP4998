@@ -31,6 +31,8 @@
 *.out
 *.app
 
-# Output
-
+# Output/Input
 output.txt
+lex_output.txt
+lista_tokens.txt
+test.txt
