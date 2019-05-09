@@ -1,5 +1,4 @@
 inicio
-	Mientras(var < 05)
+	Mientras (var < 05)
 		var = var + 01
-	finmientas
 final
