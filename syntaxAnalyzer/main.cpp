@@ -25,21 +25,49 @@ bool esToken(string token);
 void setCurrentLine(ifstream &fin, string &token, int &currentLine);
 void getCurrentLine(int &currentLine);
 
+
+// Devuleve cierto si el primer token es igual a "<palabraReservada:inicio>", seguido por una secuencia de instruciones y
+// el ultimo token es igual a "<palabraReservada:final>"
 bool esPrograma(ifstream &fin, string &token, int &currentLine);
 
+// Devuelve cierto si encuentra una instrucción seguida por una secuencia de instrucciones o una instrucción
 bool esSecuenciaInst(ifstream &fin, string &token, int &currentLine);
+
+// Devuelve cierto si alguna de las funciones esAsignacion(), esSi(), esEscribe(), o esMientras() devuelven cierto
 bool esInstruccion(ifstream &fin, string &token, int &currentLine);
 
+// Devuelve cierto si encuentra un identificador seguido por el operador de asignación luego seguido por una expresión
 bool esAsignacion(ifstream &fin, string &token, int &currentLine);
+
+// Devuelve cierto si el token es igual a "<palabraReservada:Si> seguido por una expresión de parentesis, seguido por
+// una secuencia de instrucciones [alt]
+// alt1) seguida por el token de "<palabraReservada:finsi>"
+// alt2) seguida por el token de "<palabraReservada:sino>" seguido por una secuencia de instrucciones y seguido por
+// el token "<palabraReservada:finsi"
 bool esSi(ifstream &fin, string &token, int &currentLine);
+
+// Llamada por esSi() devuelve cierto si el token es igual a "<palabraReservada:sino", es seguido por una secuencia de
+// instrucciones y seguido por el token "<palabraReservada:finsi>"
 bool esSino(ifstream &fin, string &token, int &currentLine);
+
+// Devuelve cierto si token es igual a "<palabraReservada:Escribe>" seguido por una secuencia de instruciones y seguida
+// por un ';'
 bool esEscribe(ifstream &fin, string &token, int &currentLine);
+
+// Devuelve cierto si el token es igual a "<palabraReservada:Mientras", es seguido por una secuencia de instrucciones y
+// el seguido por el token "<palabraReservada:finmientras>"
 bool esMientras(ifstream &fin, string &token, int &currentLine);
 
+// Devuelve cierto si token es igual a "<parentesisIzquierdo>" seguido por una expreción seguida por el token "<parentesisDerecho>"
 bool esExpParentesis(ifstream &fin, string &token, int &currentLine);
+
+// Devuelve cierto si encuentra un factor o la secuencia de un factor seguido por un operador binerio seguido por una expresión
 bool esExpresion(ifstream &fin, string &token, int &currentLine);
+
+// Devuelve cierto si encuentra una expresión de parentesis, un numero, o un identificador
 bool esFactor (ifstream &fin, string &token, int &currentLine);
 
+// Devuelve cierto si el token es un operador relacional o aritmetico
 bool esOpBinario(ifstream &fin, string &token, int &currentLine);
 
 int main(){
