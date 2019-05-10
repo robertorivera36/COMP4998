@@ -23,6 +23,8 @@ bool esToken(string token);
 
 // Verifica si token == "LINE", de ser asi almacena la linea actual a currentLine
 void setCurrentLine(ifstream &fin, string &token, int &currentLine);
+
+// Imprime la linea actual
 void getCurrentLine(int &currentLine);
 
 
@@ -95,11 +97,9 @@ int main(){
 		else if (esToken(token)){
 			// Para evitar que al final haya una linea vacia que causa que el ultimo token este duplicado
 			if (token == "<palabraReservada:final>"){
-				//cout << token;
 				fout << token;
 			}
 			else{
-				//cout << token << endl;
 				fout << token << endl;
 			}
 		}
@@ -108,9 +108,10 @@ int main(){
 	fin.close();
 	fout.close();
 
-	// Al finalizar el programa utilizar "lista_tokens.txt"
+	// Abre archivo que contiene una lista de los tokens del programa fuente
 	abrirArchivoEntrada(fin, "lista_tokens.txt");
 
+	// Recorre la lista en base a los tokens hasta llegar al final del archivo
 	while (!fin.eof()){
 		fin >> token;
 		setCurrentLine(fin, token, currentLine);
@@ -290,13 +291,6 @@ bool esAsignacion(ifstream &fin, string &token, int &currentLine){
 			if (esExpresion(fin, token, currentLine)){
 
 				return true;
-
-				/* Commented out because asignacion should not end in ';' */
-				/*if (token == "<puntoComa>"){
-					cout << "esAsignacion: if 4 --returns true--\n";
-
-					return true;
-				}*/
 			}
 			else{
 
