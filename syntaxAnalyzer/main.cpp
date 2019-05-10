@@ -128,6 +128,7 @@ int main(){
 }
 
 void abrirArchivoEntrada(ifstream &fin, string archivo) {
+
 	fin.open(archivo);
 	if (fin.fail()) {
 		if (archivo == "lex_output.txt"){
@@ -140,6 +141,7 @@ void abrirArchivoEntrada(ifstream &fin, string archivo) {
 }
 
 bool esToken(string token){
+
 	string tokenArray[] = {
 	"<palabraReservada:inicio>","<palabraReservada:final>","<palabraReservada:Si>","<palabraReservada:finsi>",
 	"<palabraReservada:sino>","<palabraReservada:Mientras>","<palabraReservada:finmientras>","<palabraReservada:Escribe>",
@@ -184,16 +186,19 @@ void getCurrentLine(int &currentLine){
 
 bool esPrograma(ifstream &fin, string &token, int &currentLine){
 
+	// De token ser <palabraReservada:inicio> sigue recorriendo la lista de tokens
 	if (token == "<palabraReservada:inicio>"){
 
 		fin >> token;
 		setCurrentLine(fin, token, currentLine);
 
+		// De encontrar una secuencia de instrucciones sigue recorriendo la lista de tokens
 		if (esSecuenciaInst(fin, token, currentLine)){
 
 			fin >> token;
 			setCurrentLine(fin, token, currentLine);
 
+			// De el ultimo token de la lista ser <palabraReservada:final> se considera el programa compilado
 			if (token == "<palabraReservada:final>"){
 
 				cout << "compiled successfully\n";
@@ -229,6 +234,8 @@ bool esPrograma(ifstream &fin, string &token, int &currentLine){
 }
 
 bool esSecuenciaInst(ifstream &fin, string &token, int &currentLine){
+
+	// De encontrar una secuencia de instrucciones entra al if
 	if (esInstruccion(fin, token, currentLine)){
 
 		// para evitar pasar por la palabra reservada sin analizarla de ya tenerla en queue
@@ -239,14 +246,17 @@ bool esSecuenciaInst(ifstream &fin, string &token, int &currentLine){
 		fin >> token;
 		setCurrentLine(fin, token, currentLine);
 
+		// De encontrar una secuencia de instrucciones devuelve cierto
 		if (esSecuenciaInst(fin, token, currentLine)){
 
 			return true;
 		}
+		// De encontrar una instrucción devuelve cierto
 		else if (esInstruccion(fin, token, currentLine)){
 
 			return true;
 		}
+		// De token ser uno relacionado con la finalización de alguna instrucción, devuelve cierto
 		else if (token == "<palabraReservada:finmientras>" || token == "<palabraReservada:sino>" || token == "<palabraReservada:finsi>" || token == "<palabraReservada:final>"){ // Aqui poner palabras reservadas de terminacion de inst
 			
 			return true;
@@ -267,6 +277,8 @@ bool esSecuenciaInst(ifstream &fin, string &token, int &currentLine){
 }
 
 bool esInstruccion(ifstream &fin, string &token, int &currentLine){
+
+	// De alguna de las siguientes funciones devolver cierto, esInstrucción() devuelve cierto
 	if (esMientras(fin, token, currentLine) || esEscribe(fin, token, currentLine) || esAsignacion(fin, token, currentLine) || esSi(fin, token, currentLine)){
 
 		return true;
@@ -278,16 +290,20 @@ bool esInstruccion(ifstream &fin, string &token, int &currentLine){
 }
 
 bool esAsignacion(ifstream &fin, string &token, int &currentLine){
+
+	// De token ser <identificador> sigue recorriendo la lista de tokens
 	if (token == "<identificador>"){
 
 		fin >> token;
 		setCurrentLine(fin, token, currentLine);
 
+		// De token ser <opAsignacion> sigue recorriendo la lista de tokens
 		if (token == "<opAsignacion>"){
 
 			fin >> token;
 			setCurrentLine(fin, token, currentLine);
 
+			// De encontrar una expresión devuelve cierto
 			if (esExpresion(fin, token, currentLine)){
 
 				return true;
@@ -314,16 +330,19 @@ bool esAsignacion(ifstream &fin, string &token, int &currentLine){
 
 bool esSi(ifstream &fin, string &token, int &currentLine){
 
+	// De token ser <palabraReservada:Si> sigue recorriendo la lista de tokens
 	if (token == "<palabraReservada:Si>"){
 
 		fin >> token;
 		setCurrentLine(fin, token, currentLine);
 
+		// De encontrar una expresión de paréntesis sigue recorriendo la lista de tokens
 		if (esExpParentesis(fin, token, currentLine)){
 
 			fin >> token;
 			setCurrentLine(fin, token, currentLine);
 
+			// De encontrar una secuencia de instrucciones sigue recorriendo la lista de tokens
 			if (esSecuenciaInst(fin, token, currentLine)){
 
 				// para evitar pasar por la palabra reservada sin analizarla de ya tenerla en queue
@@ -339,10 +358,12 @@ bool esSi(ifstream &fin, string &token, int &currentLine){
 				fin >> token;
 				setCurrentLine(fin, token, currentLine);
 				
+				// De token ser <palabraReservada:finsi> devuelve cierto
 				if (token == "<palabraReservada:finsi>"){
 
 					return true;
 				}
+				// De esSino() devolver cierto, esSi() devuelve cierto
 				else if (esSino(fin, token, currentLine)){
 
 					return true;
@@ -382,13 +403,16 @@ bool esSi(ifstream &fin, string &token, int &currentLine){
 
 bool esSino(ifstream &fin, string &token, int &currentLine){
 
+	// De token ser <palabraReservada:sino> sigue recorriendo la lista de tokens
 	if (token == "<palabraReservada:sino>"){
 
 		fin >> token;
 		setCurrentLine(fin, token, currentLine);
 
+		// De encontrar una secuencia de instrucciones sigue recorriendo la lista de tokens
 		if (esSecuenciaInst(fin, token, currentLine)){
 
+			// De token ser <palabraReservada:finsi> devuelve cierto; si no, coge el proximo token
 			if (token == "<palabraReservada:finsi>"){
 
 				return true;
@@ -397,6 +421,7 @@ bool esSino(ifstream &fin, string &token, int &currentLine){
 			fin >> token;
 			setCurrentLine(fin, token, currentLine);
 
+			// De token ser <palabraReservada:finsi> devuelve cierto
 			if (token == "<palabraReservada:finsi>"){
 
 				return true;
@@ -427,16 +452,19 @@ bool esSino(ifstream &fin, string &token, int &currentLine){
 
 bool esEscribe(ifstream &fin, string &token, int &currentLine){
 
+	// De token ser <palabraReservada:Escribe> sigue recorriendo la lista de tokens
 	if (token == "<palabraReservada:Escribe>"){
 
 		fin >> token;
 		setCurrentLine(fin, token, currentLine);
 
+		// De encontrar una expresión de paréntesis sigue recorriendo la lista de tokens
 		if (esExpParentesis(fin, token, currentLine)){
 
 			fin >> token;
 			setCurrentLine(fin, token, currentLine);
 
+			// De token ser <puntoComa> devuelve cierto
 			if (token == "<puntoComa>"){
 
 				return true;
@@ -467,16 +495,19 @@ bool esEscribe(ifstream &fin, string &token, int &currentLine){
 
 bool esMientras(ifstream &fin, string &token, int &currentLine){
 
+	// De token ser <palabraReservada:Mientras> sigue recorriendo la lista de tokens
 	if (token == "<palabraReservada:Mientras>"){
 
 		fin >> token;
 		setCurrentLine(fin, token, currentLine);
 
+		// De encontrar una expresión de paréntesis sigue recorriendo la lista de tokens
 		if (esExpParentesis(fin, token, currentLine)){
 
 			fin >> token;
 			setCurrentLine(fin, token, currentLine);
 
+			// De encontrar una secuencia de instrucciones sigue recorriendo la lista de tokens
 			if (esSecuenciaInst(fin, token, currentLine)){ // originalmente esSecuenciaInst
 
 				// para evitar pasar por la palabra reservada sin analizarla de ya tenerla en queue
@@ -488,6 +519,7 @@ bool esMientras(ifstream &fin, string &token, int &currentLine){
 				fin >> token;
 				setCurrentLine(fin, token, currentLine);
 
+				// De token ser <palabraReservada:finmientras> devuelve cierto
 				if (token == "<palabraReservada:finmientras>"){
 
 					return true;
@@ -527,16 +559,19 @@ bool esMientras(ifstream &fin, string &token, int &currentLine){
 
 bool esExpParentesis(ifstream &fin, string &token, int &currentLine){
 
+	// De token ser <parentesisIzquierdo> sigue recorriendo la lista de tokens
 	if (token == "<parentesisIzquierdo>"){
 
 		fin >> token;
 		setCurrentLine(fin, token, currentLine);
 
+		// De encontrar una expresión sigue recorriendo la lista de tokens
 		if (esExpresion(fin, token, currentLine)){
 
 			// aqui ya estoy en parentesisDerecho al coger el prox lo brincamos
 			//fin >> token;
 
+			// De token ser <parentesisDerecho> devuelve cierto
 			if (token == "<parentesisDerecho>"){
 
 				return true;
@@ -571,16 +606,19 @@ bool esExpParentesis(ifstream &fin, string &token, int &currentLine){
 
 bool esExpresion(ifstream &fin, string &token, int &currentLine){
 
+	// De encontrar un factor sigue recorriendo la lista de tokens
 	if (esFactor(fin, token, currentLine)){
 		
 		fin >> token;
 		setCurrentLine(fin, token, currentLine);
 
+		// De token ser un operador binario sigue recorriendo la lista de tokens
 		if (esOpBinario(fin, token, currentLine)){
 
 			fin >> token;
 			setCurrentLine(fin, token, currentLine);
 
+			// De encontrar una expresión devuelve cierto
 			if (esExpresion(fin, token, currentLine)){
 				
 				return true;
@@ -611,6 +649,7 @@ bool esExpresion(ifstream &fin, string &token, int &currentLine){
 
 bool esFactor(ifstream &fin, string &token, int &currentLine){
 	
+	// De token ser <numero>, <identificador>, o encuentra una expesión de paréntesis; devuelve cierto
 	if (token == "<numero>" || token == "<identificador>" || esExpParentesis(fin, token, currentLine)){
 
 		return true;
@@ -625,6 +664,7 @@ bool esFactor(ifstream &fin, string &token, int &currentLine){
 
 bool esOpBinario(ifstream &fin, string &token, int &currentLine){
 	
+	// De token ser <opAritmetico> o <opRelacional> devuelve cierto
 	if (token == "<opAritmetico>" || token == "<opRelacional>"){
 
 		return true;
